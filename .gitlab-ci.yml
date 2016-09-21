@@ -1,0 +1,6 @@
+job-testing:
+    script: 
+        - "uname -r; pwd"
+        - "cd impl"
+        - cd ..
+        - "./test.sh"
