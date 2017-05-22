@@ -27,5 +27,4 @@ public class UserDao {
 	public User getUser(Integer id) {
 		return em.find(User.class, id);
 	}
-	
 }

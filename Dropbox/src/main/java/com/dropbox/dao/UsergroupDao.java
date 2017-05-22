@@ -26,5 +26,4 @@ public class UsergroupDao {
 	public Usergroup getUsergroup(Integer id) {
 		return em.find(Usergroup.class, id);
 	}
-	
 }

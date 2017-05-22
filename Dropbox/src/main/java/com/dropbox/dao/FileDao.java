@@ -1,7 +1,13 @@
 package com.dropbox.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureParameter;
+import javax.persistence.StoredProcedureQuery;
 
 import com.dropbox.dao.DaoManager;
 
@@ -27,5 +33,19 @@ public class FileDao {
 		return em.find(File.class, id);
 	}
 	
+	public List<File> getFilesFromUserGroup(int groupId) {
+		/*TODO*/
+		return null;
+	}
+	
+	public void deleteFile(Integer id) {
+		
+		File f = em.find(File.class, id);
+		if (f != null) {
+			em.getTransaction().begin();
+			em.remove(f);
+			em.getTransaction().commit();
+		}
+	}
 }
 	

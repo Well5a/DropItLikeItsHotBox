@@ -27,5 +27,4 @@ public class GroupDao {
 	public Group getGroup(Integer id) {
 		return em.find(Group.class, id);
 	}
-	
 }
