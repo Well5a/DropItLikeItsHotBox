@@ -1,5 +1,5 @@
 package com.dropbox.dao;
 
-public class UsertableDao {
+public class UsergroupDao {
 
 }
