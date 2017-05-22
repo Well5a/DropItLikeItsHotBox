@@ -1,5 +1,26 @@
 package com.dropbox.dao;
 
-public class FileDao {
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
+import com.dropbox.dao.DaoManager;
+
+import model.File;
+
+
+public class FileDao {
+	private static EntityManager em;
+	private static FileDao singleton;
+	
+	private FileDao() {
+		em = DaoManager.getInstance().getEntityManager();
+	}
+
+	public static FileDao getInstance() {
+		if (singleton == null) {
+			singleton = new FileDao();
+		}
+		return singleton;
+	}
 }
+	
