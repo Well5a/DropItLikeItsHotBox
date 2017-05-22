@@ -5,6 +5,7 @@ import javax.persistence.Query;
 
 import com.dropbox.dao.DaoManager;
 
+import model.File;
 import model.Filepermission;
 
 public class FilepermissionDao {
@@ -22,4 +23,9 @@ public class FilepermissionDao {
 		}
 		return singleton;
 	}
+	
+	public Filepermission getFilepermission(Integer id) {
+		return em.find(Filepermission.class, id);
+	}
+	
 }

@@ -22,5 +22,10 @@ public class FileDao {
 		}
 		return singleton;
 	}
+	
+	public File getFile(Integer id) {
+		return em.find(File.class, id);
+	}
+	
 }
 	

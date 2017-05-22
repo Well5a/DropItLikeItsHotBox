@@ -5,6 +5,7 @@ import javax.persistence.Query;
 
 import com.dropbox.dao.DaoManager;
 
+import model.File;
 import model.Group;
 
 public class GroupDao {
@@ -22,4 +23,9 @@ public class GroupDao {
 		}
 		return singleton;
 	}
+	
+	public Group getGroup(Integer id) {
+		return em.find(Group.class, id);
+	}
+	
 }

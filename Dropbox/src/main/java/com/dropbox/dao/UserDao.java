@@ -5,6 +5,7 @@ import javax.persistence.Query;
 
 import com.dropbox.dao.DaoManager;
 
+import model.File;
 import model.User;
 
 
@@ -22,4 +23,9 @@ public class UserDao {
 		}
 		return singleton;
 	}
+	
+	public User getUser(Integer id) {
+		return em.find(User.class, id);
+	}
+	
 }
