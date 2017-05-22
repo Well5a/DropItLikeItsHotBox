@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="Dropbox/src/main/java"/>
+	<classpathentry kind="src" path="Dropbox/src/test/java"/>
+	<classpathentry kind="lib" path="Dropbox/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="Dropbox/bin"/>
+</classpath>
