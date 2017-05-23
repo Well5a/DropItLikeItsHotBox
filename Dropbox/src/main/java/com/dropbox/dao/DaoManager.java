@@ -26,5 +26,4 @@ public class DaoManager {
 	public EntityManager getEntityManager() {
 		return em;
 	}
-
 }

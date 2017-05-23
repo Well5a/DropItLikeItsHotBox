@@ -26,4 +26,20 @@ public class UsergroupDao {
 	public Usergroup getUsergroup(Integer id) {
 		return em.find(Usergroup.class, id);
 	}
+	
+	public void insertUsergroup(Usergroup uG) {
+		em.getTransaction().begin();
+		em.persist(uG);
+		em.getTransaction().commit();
+	}
+	
+	public void deleteUsergroup(Integer id) {
+		
+		Usergroup uG = em.find(Usergroup.class, id);
+		if (uG != null) {
+			em.getTransaction().begin();
+			em.remove(uG);
+			em.getTransaction().commit();
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package com.dropbox.dao;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -16,18 +16,18 @@ public class Filepermission implements Serializable {
 	@Id
 	private int oid;
 
-	private byte read;
+	private byte allowRead;
 
-	private byte write;
+	private byte allowWrite;
 
 	//bi-directional many-to-one association to File
 	@ManyToOne
-	@JoinColumn(name="fileID")
+	@JoinColumn(name="fileId")
 	private File file;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="userID")
+	@JoinColumn(name="userId")
 	private User user;
 
 	public Filepermission() {
@@ -41,20 +41,20 @@ public class Filepermission implements Serializable {
 		this.oid = oid;
 	}
 
-	public byte getRead() {
-		return this.read;
+	public byte getAllowRead() {
+		return this.allowRead;
 	}
 
-	public void setRead(byte read) {
-		this.read = read;
+	public void setAllowRead(byte allowRead) {
+		this.allowRead = allowRead;
 	}
 
-	public byte getWrite() {
-		return this.write;
+	public byte getAllowWrite() {
+		return this.allowWrite;
 	}
 
-	public void setWrite(byte write) {
-		this.write = write;
+	public void setAllowWrite(byte allowWrite) {
+		this.allowWrite = allowWrite;
 	}
 
 	public File getFile() {

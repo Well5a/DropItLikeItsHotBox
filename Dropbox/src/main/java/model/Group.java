@@ -1,4 +1,4 @@
-package com.dropbox.dao;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;

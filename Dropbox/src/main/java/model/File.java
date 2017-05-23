@@ -1,4 +1,4 @@
-package com.dropbox.dao;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -21,7 +21,7 @@ public class File implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="ownerID")
+	@JoinColumn(name="ownerId")
 	private User user;
 
 	//bi-directional many-to-one association to Filepermission

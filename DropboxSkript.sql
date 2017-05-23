@@ -36,7 +36,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `dropbox`.`file` (
   `oId` INT(11) NOT NULL,
   `path` VARCHAR(255) NOT NULL,
-  `ownerID` INT NOT NULL,
+  `ownerId` INT NOT NULL,
   PRIMARY KEY (`oId`),
   INDEX `fk_file_user1_idx` (`ownerID` ASC),
   CONSTRAINT `fk_file_user1`
@@ -53,10 +53,10 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dropbox`.`filepermission` (
   `oid` INT(11) NOT NULL,
-  `read` TINYINT(1) NOT NULL,
-  `write` TINYINT(1) NOT NULL,
-  `fileID` INT NOT NULL,
-  `userID` INT NOT NULL,
+  `allowRead` TINYINT(1) NOT NULL,
+  `allowWrite` TINYINT(1) NOT NULL,
+  `fileId` INT NOT NULL,
+  `userId` INT NOT NULL,
   PRIMARY KEY (`oid`),
   INDEX `fk_filepermission_file1_idx` (`fileID` ASC),
   INDEX `fk_filepermission_user1_idx` (`userID` ASC),
