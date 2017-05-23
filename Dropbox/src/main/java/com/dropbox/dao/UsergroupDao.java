@@ -6,6 +6,8 @@ import javax.persistence.Query;
 import com.dropbox.dao.DaoManager;
 
 import model.File;
+import model.Group;
+import model.User;
 import model.Usergroup;
 
 public class UsergroupDao {
@@ -25,6 +27,17 @@ public class UsergroupDao {
 	
 	public Usergroup getUsergroup(Integer id) {
 		return em.find(Usergroup.class, id);
+	}
+	
+	public void addUserToGroup(User user, Group group) {
+		Usergroup newug = new Usergroup();
+		newug.setUser(user);
+		newug.setGroup(group);
+		insertUsergroup(newug);
+	}
+	
+	public void removeUserFromGroup (Integer id) {
+		/*TODO*/
 	}
 	
 	public void insertUsergroup(Usergroup uG) {

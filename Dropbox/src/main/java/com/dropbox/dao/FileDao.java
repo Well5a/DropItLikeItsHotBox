@@ -12,6 +12,7 @@ import javax.persistence.StoredProcedureQuery;
 import com.dropbox.dao.DaoManager;
 
 import model.File;
+import model.User;
 
 
 public class FileDao {
@@ -29,12 +30,19 @@ public class FileDao {
 		return singleton;
 	}
 	
+	public void insertFile(File f)
+	{
+		em.getTransaction().begin();
+		em.persist(f);
+		em.getTransaction().commit();
+	}
+	
 	public File getFile(Integer id) {
 		return em.find(File.class, id);
 	}
 	
 	public List<File> getFilesFromUserGroup(int groupId) {
-		/*TODO*/
+		Query q = em.createQuery("SELECT");
 		return null;
 	}
 	

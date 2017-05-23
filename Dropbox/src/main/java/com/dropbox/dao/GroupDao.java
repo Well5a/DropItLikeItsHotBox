@@ -27,4 +27,32 @@ public class GroupDao {
 	public Group getGroup(Integer id) {
 		return em.find(Group.class, id);
 	}
+	
+	public void addGroup(Integer groupId, String name)
+	{
+		Group g = new Group();
+		g.setGroupName(name);
+		g.setOId(groupId);
+		em.getTransaction().begin();
+		em.persist(g);
+		em.getTransaction().commit();
+	}
+	
+	public void addGroup(Group g)
+	{
+		em.getTransaction().begin();
+		em.persist(g);
+		em.getTransaction().commit();
+	}
+	
+	public void deleteGroup(Integer id) 
+	{
+		Group g = em.find(Group.class, id);
+		if (g != null) 
+		{
+			em.getTransaction().begin();
+			em.remove(g);
+			em.getTransaction().commit();
+		}
+	}
 }
