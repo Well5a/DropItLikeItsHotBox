@@ -75,32 +75,32 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `dropbox`.`group`
+-- Table `dropbox`.`groups`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dropbox`.`group` (
+CREATE TABLE IF NOT EXISTS `dropbox`.`groups` (
   `oId` INT(11) NOT NULL,
-  `groupName` VARCHAR(45) NOT NULL,
+  `groupsName` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`oId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `dropbox`.`usergroup`
+-- Table `dropbox`.`usergroups`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dropbox`.`usergroup` (
+CREATE TABLE IF NOT EXISTS `dropbox`.`usergroups` (
   `oId` INT(11) NOT NULL,
   `userId` INT(11) NOT NULL,
-  `groupId` INT(11) NOT NULL,
+  `groupsId` INT(11) NOT NULL,
   PRIMARY KEY (`oId`),
-  INDEX `fk_Usergroup_user_idx` (`userId` ASC),
-  INDEX `fk_Usergroup_group1_idx` (`groupId` ASC),
-  CONSTRAINT `fk_Usergroup_group1`
-    FOREIGN KEY (`groupId`)
-    REFERENCES `dropbox`.`group` (`oId`)
+  INDEX `fk_Usergroups_user_idx` (`userId` ASC),
+  INDEX `fk_Usergroups_groups1_idx` (`groupsId` ASC),
+  CONSTRAINT `fk_Usergroups_groups1`
+    FOREIGN KEY (`groupsId`)
+    REFERENCES `dropbox`.`groups` (`oId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Usergroup_user`
+  CONSTRAINT `fk_Usergroups_user`
     FOREIGN KEY (`userId`)
     REFERENCES `dropbox`.`user` (`oId`)
     ON DELETE NO ACTION

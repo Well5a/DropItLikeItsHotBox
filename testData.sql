@@ -5,10 +5,10 @@ VALUES  (3, 'Julian', '12345', 'juscit06@hs-esslingen.de'),
 		(2, 'David', '12345', 'dascit12@hs-esslingen.de'),
         (1, 'Marcel', '12345', 'maweit06@hs-esslingen.de');
         
-INSERT INTO dropbox.group (oId, groupName)
-VALUES (1, 'Examplegroup');
+INSERT INTO dropbox.groups (oId, groupsName)
+VALUES (1, 'Examplegroups');
         
-INSERT INTO dropbox.usergroup (oId, userId, groupId)
+INSERT INTO dropbox.usergroups (oId, userId, groupsId)
 VALUES	(1, 3, 1),
 		(2, 2, 1);
 
