@@ -2,11 +2,34 @@ package com.dropbox.dao;
 
 import static org.junit.Assert.*;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+
 import model.User;
+import com.dropbox.PrepareTests;
 
 public class UserDaoTest {
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		PrepareTests.initDatabase();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
 
 	@Test
 	public void testGetInstance() {

@@ -41,6 +41,7 @@ public class FileDao {
 		return em.find(File.class, id);
 	}
 	
+	/*TODO*/
 	public List<File> getFilesFromUserGroup(int groupId) {
 		Query q = em.createQuery("SELECT");
 		return null;
