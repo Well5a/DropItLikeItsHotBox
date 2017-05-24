@@ -14,9 +14,18 @@ import com.dropbox.PrepareTests;
 
 public class UserDaoTest {
 	
+	private static User u = null;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PrepareTests.initDatabase();
+		//PrepareTests.initDatabase();
+		u = new User();
+		u.setEmail("test@whatever.com");
+		u.setOId(666);
+		u.setPasswd("blblabaldasisteinhash");
+		u.setUsername("testUser");
+		
+		UserDao.getInstance().insertUser(u);
 	}
 
 	@AfterClass
@@ -41,12 +50,6 @@ public class UserDaoTest {
 	public void testGetUser() {
 		UserDao dao = UserDao.getInstance();
 		
-		User u = new User();
-		u.setEmail("test@whatever.com");
-		u.setOId(1);
-		u.setPasswd("blblabaldasisteinhash");
-		
-		dao.insertUser(u);
 		User newOldUser = dao.getUser(u.getOId());
 		assertNotNull(newOldUser);
 	}
@@ -55,12 +58,6 @@ public class UserDaoTest {
 	public void testDeleteUser() {
 		UserDao dao = UserDao.getInstance();
 		
-		User u = new User();
-		u.setEmail("test@whatever.com");
-		u.setOId(1);
-		u.setPasswd("blblabaldasisteinhash");
-		
-		dao.insertUser(u);
 		dao.deleteUser(u.getOId());
 		User newOldUser = dao.getUser(u.getOId());
 		assertNull(newOldUser);

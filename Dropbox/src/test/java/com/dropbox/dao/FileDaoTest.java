@@ -14,22 +14,32 @@ import com.dropbox.PrepareTests;
 
 public class FileDaoTest {
 
-	private static User user = null;
+	private static User u = null;
+	private static File f = null;
 	
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		//PrepareTests.initDatabase();
-		User user = new User();
-		user.setOId(5);
-		user.setEmail("testmail@test.de");
-		user.setPasswd("test");
-		user.setUsername("testUser5");
-		UserDao.getInstance().insertUser(user);
+		u = new User();
+		u.setEmail("test@whatever.com");
+		u.setOId(666);
+		u.setPasswd("blblabaldasisteinhash");
+		u.setUsername("testUser");
+		UserDao.getInstance().insertUser(u);
+		
+		f = new File();
+		f.setOId(666);
+		f.setPath("/home/test/blubb");
+		f.setUser(u);
+		FileDao.getInstance().insertFile(f);
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		UserDao dao = UserDao.getInstance();
+		dao.deleteUser(u.getOId());
+		
 	}
 
 	@Before
@@ -49,40 +59,19 @@ public class FileDaoTest {
 	@Test
 	public void testGetFile() {
 		FileDao dao = FileDao.getInstance();
-		File file = new File();
 		
-		file.setOId(1);
-		file.setPath("/home/test/blubb");
-		file.setUser(user);
-		
-		dao.insertFile(file);
-		File newOldFile = dao.getFile(file.getOId());
+		File newOldFile = dao.getFile(f.getOId());
 		assertNotNull(newOldFile);
 	}
 	
-	@Test
-	public void testInsertFile() {
-		FileDao dao = FileDao.getInstance();
-		File file = new File();
-		file.setOId(1);
-		file.setPath("/home/test/blubb");
-		
-		dao.insertFile(file);
-		File newOldFile = dao.getFile(file.getOId());
-		assertNotNull(newOldFile);
-	}
 	
 	@Test
 	public void testDeleteFile() 
 	{
-		File file = new File();
 		FileDao dao = FileDao.getInstance();
 		
-		file.setOId(1);
-		file.setPath("/home/test/blubb");
 		
-		dao.insertFile(file);
-		dao.deleteFile(file.getOId());
-		assertNull(dao.getFile(file.getOId()));
+		dao.deleteFile(f.getOId());
+		assertNull(dao.getFile(f.getOId()));
 	}
 }
