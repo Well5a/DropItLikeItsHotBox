@@ -31,9 +31,9 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user")
 	private List<Filepermission> filepermissions;
 
-	//bi-directional many-to-one association to Usergroup
+	//bi-directional many-to-one association to Usergroups
 	@OneToMany(mappedBy="user")
-	private List<Usergroup> usergroups;
+	private List<Usergroups> usergroups;
 
 	public User() {
 	}
@@ -114,22 +114,22 @@ public class User implements Serializable {
 		return filepermission;
 	}
 
-	public List<Usergroup> getUsergroups() {
+	public List<Usergroups> getUsergroups() {
 		return this.usergroups;
 	}
 
-	public void setUsergroups(List<Usergroup> usergroups) {
+	public void setUsergroups(List<Usergroups> usergroups) {
 		this.usergroups = usergroups;
 	}
 
-	public Usergroup addUsergroup(Usergroup usergroup) {
+	public Usergroups addUsergroup(Usergroups usergroup) {
 		getUsergroups().add(usergroup);
 		usergroup.setUser(this);
 
 		return usergroup;
 	}
 
-	public Usergroup removeUsergroup(Usergroup usergroup) {
+	public Usergroups removeUsergroup(Usergroups usergroup) {
 		getUsergroups().remove(usergroup);
 		usergroup.setUser(null);
 
