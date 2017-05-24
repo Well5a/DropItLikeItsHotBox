@@ -49,13 +49,13 @@ public class PrepareTests {
 		}
 
 		try {
-			em.createNativeQuery("DELETE FROM dropbox.usergroup").executeUpdate();
+			em.createNativeQuery("DELETE FROM dropbox.usergroups").executeUpdate();
 		} catch (Exception e) {
 
 		}
 		
 		try {
-			em.createNativeQuery("DELETE FROM dropbox.group").executeUpdate();
+			em.createNativeQuery("DELETE FROM dropbox.groups").executeUpdate();
 		} catch (Exception e) {
 
 		}
