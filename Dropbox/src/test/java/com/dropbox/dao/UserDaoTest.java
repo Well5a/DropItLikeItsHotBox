@@ -30,6 +30,8 @@ public class UserDaoTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		UserDao dao = UserDao.getInstance();
+		dao.deleteUser(u.getOId());
 	}
 
 	@Before

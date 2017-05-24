@@ -37,8 +37,11 @@ public class FileDaoTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		UserDao dao = UserDao.getInstance();
-		dao.deleteUser(u.getOId());
+		UserDao daoU = UserDao.getInstance();
+		daoU.deleteUser(u.getOId());
+		
+		FileDao daoF = FileDao.getInstance();
+		daoF.deleteFile(f.getOId());
 		
 	}
 
@@ -69,7 +72,6 @@ public class FileDaoTest {
 	public void testDeleteFile() 
 	{
 		FileDao dao = FileDao.getInstance();
-		
 		
 		dao.deleteFile(f.getOId());
 		assertNull(dao.getFile(f.getOId()));

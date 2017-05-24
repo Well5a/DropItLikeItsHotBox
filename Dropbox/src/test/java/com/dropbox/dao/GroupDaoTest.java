@@ -13,13 +13,23 @@ import com.dropbox.PrepareTests;
 
 public class GroupDaoTest {
 	
+	public static Group g = null;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PrepareTests.initDatabase();
+		//PrepareTests.initDatabase();
+		g = new Group();
+		g.setGroupName("Testgroup");
+		g.setOId(666);
+		
+		GroupDao.getInstance().addGroup(g);
+		
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		GroupDao dao = GroupDao.getInstance();
+		dao.deleteGroup(g.getOId());
 	}
 
 	@Before
@@ -31,27 +41,17 @@ public class GroupDaoTest {
 	}
 
 	@Test
-	public void testAddGroup() {
+	public void testGetGroup() {
 		GroupDao dao = GroupDao.getInstance();
 		
-		Group g = new Group();
-		g.setGroupName("Testgroup");
-		g.setOId(1);
-		
-		dao.addGroup(g);
 		Group newOldGroup = dao.getGroup(g.getOId());
 		assertNotNull(newOldGroup);
 	}
 	
 	@Test
-	public void deleteGroup() {
+	public void testDeleteGroup() {
 		GroupDao dao = GroupDao.getInstance();
-		
-		Group g = new Group();
-		g.setGroupName("Testgroup");
-		g.setOId(1);
-		
-		dao.addGroup(g);
+				
 		dao.deleteGroup(g.getOId());
 		Group newOldGroup = dao.getGroup(g.getOId());
 		assertNull(newOldGroup);
