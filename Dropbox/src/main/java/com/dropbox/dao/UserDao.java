@@ -2,6 +2,7 @@ package com.dropbox.dao;
 
 import javax.persistence.EntityManager;
 import com.dropbox.dao.DaoManager;
+
 import model.User;
 
 
@@ -39,6 +40,5 @@ public class UserDao {
 			em.remove(u);
 			em.getTransaction().commit();
 		}
-	}
-	
+	}	
 }
