@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import model.File;
 import model.User;
-import com.dropbox.PrepareTests;
 
 public class FileDaoTest {
 
@@ -20,7 +19,6 @@ public class FileDaoTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//PrepareTests.initDatabase();
 		u = new User();
 		u.setEmail("test@whatever.com");
 		u.setOId(666);

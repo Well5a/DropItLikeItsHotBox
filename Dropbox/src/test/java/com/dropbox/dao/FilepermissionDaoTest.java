@@ -11,13 +11,12 @@ import org.junit.Test;
 import model.File;
 import model.Filepermission;
 import model.User;
-import com.dropbox.PrepareTests;
 
 public class FilepermissionDaoTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PrepareTests.initDatabase();
+		
 	}
 
 	@AfterClass

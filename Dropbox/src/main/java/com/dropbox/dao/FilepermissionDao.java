@@ -1,11 +1,8 @@
 package com.dropbox.dao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
 import com.dropbox.dao.DaoManager;
 
-import model.File;
 import model.Filepermission;
 
 public class FilepermissionDao {

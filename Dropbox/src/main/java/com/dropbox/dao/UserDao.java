@@ -1,13 +1,7 @@
 package com.dropbox.dao;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import java.util.List;
-
 import com.dropbox.dao.DaoManager;
-
-import model.File;
 import model.User;
 
 
@@ -47,21 +41,4 @@ public class UserDao {
 		}
 	}
 	
-	public List<User> getUserByGroup(int groupId) {
-		
-		Query q = em.createQuery("USE dropbox;" +
-								"SELECT userId" + 										
-								", user.username" +
-								", user.email" +
-						        ", user.passwd" +  
-								"FROM usergroup" +
-								"join user" +
-								"on user.oId = usergroup.userId" +
-								"WHERE groupId = :gid");
-		q.setParameter("gid", groupId);
-		@SuppressWarnings("unchecked")
-		List<User> result = q.getResultList();
-		
-		return result;
-	}
 }

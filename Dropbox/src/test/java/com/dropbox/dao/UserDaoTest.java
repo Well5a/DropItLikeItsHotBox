@@ -8,9 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 import model.User;
-import com.dropbox.PrepareTests;
 
 public class UserDaoTest {
 	
@@ -18,7 +16,6 @@ public class UserDaoTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		//PrepareTests.initDatabase();
 		u = new User();
 		u.setEmail("test@whatever.com");
 		u.setOId(666);
