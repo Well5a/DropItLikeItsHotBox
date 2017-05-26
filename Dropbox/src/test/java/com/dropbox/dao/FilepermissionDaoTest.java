@@ -14,8 +14,8 @@ import model.User;
 
 public class FilepermissionDaoTest {
 	
-	private static User u = null;
-	private static File f = null;
+	private static User u 			= null;
+	private static File f 			= null;
 	private static Filepermission p = null;
 
 	@BeforeClass
@@ -43,17 +43,15 @@ public class FilepermissionDaoTest {
 	}
 
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public static void tearDownAfterClass() throws Exception {		
 		FilepermissionDao daoP = FilepermissionDao.getInstance();
-		daoP.deleteFilepermission(p.getOId());
-		
-		UserDao daoU = UserDao.getInstance();
-		daoU.deleteUser(u.getOId());
+		daoP.deleteFilepermission(p.getOId());	
 		
 		FileDao daoF = FileDao.getInstance();
 		daoF.deleteFile(f.getOId());
-		
-		
+					
+		UserDao daoU = UserDao.getInstance();
+		daoU.deleteUser(u.getOId());
 	}
 
 	@Before

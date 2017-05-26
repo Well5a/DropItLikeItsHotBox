@@ -35,12 +35,11 @@ public class FileDaoTest {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		FileDao daoF = FileDao.getInstance();
+		daoF.deleteFile(f.getOId());	
+		
 		UserDao daoU = UserDao.getInstance();
 		daoU.deleteUser(u.getOId());
-		
-		FileDao daoF = FileDao.getInstance();
-		daoF.deleteFile(f.getOId());
-		
 	}
 
 	@Before
