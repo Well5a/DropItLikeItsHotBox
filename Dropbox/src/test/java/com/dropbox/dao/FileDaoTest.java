@@ -63,8 +63,7 @@ public class FileDaoTest {
 		
 		File newOldFile = dao.getFile(f.getOId());
 		assertNotNull(newOldFile);
-	}
-	
+	}	
 	
 	@Test
 	public void testDeleteFile() 

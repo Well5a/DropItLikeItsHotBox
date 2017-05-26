@@ -14,7 +14,7 @@ public class Filepermission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int oid;
+	private int oId;
 
 	private byte allowRead;
 
@@ -33,12 +33,12 @@ public class Filepermission implements Serializable {
 	public Filepermission() {
 	}
 
-	public int getOid() {
-		return this.oid;
+	public int getOId() {
+		return this.oId;
 	}
 
-	public void setOid(int oid) {
-		this.oid = oid;
+	public void setOId(int oId) {
+		this.oId = oId;
 	}
 
 	public byte getAllowRead() {

@@ -52,12 +52,12 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `dropbox`.`filepermission`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dropbox`.`filepermission` (
-  `oid` INT(11) NOT NULL,
+  `oId` INT(11) NOT NULL,
   `allowRead` TINYINT(1) NOT NULL,
   `allowWrite` TINYINT(1) NOT NULL,
   `fileId` INT NOT NULL,
   `userId` INT NOT NULL,
-  PRIMARY KEY (`oid`),
+  PRIMARY KEY (`oId`),
   INDEX `fk_filepermission_file1_idx` (`fileID` ASC),
   INDEX `fk_filepermission_user1_idx` (`userID` ASC),
   CONSTRAINT `fk_filepermission_file1`
