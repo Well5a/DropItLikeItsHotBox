@@ -1,8 +1,11 @@
 package com.dropbox.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import com.dropbox.dao.DaoManager;
 
+import model.File;
 import model.User;
 
 
@@ -25,12 +28,25 @@ public class UserDao {
 		return em.find(User.class, id);
 	}
 	
+	public User getUserByUsername(String username)
+	{
+		Query q = em.createQuery("SELECT * FROM user WHERE user.username = :username");
+		q.setParameter("username", username);
+		return (User)q.getResultList().get(0);
+	}
+	
 	public void insertUser(User u)
 	{
 		em.getTransaction().begin();
 		em.persist(u);
 		em.getTransaction().commit();
-	}	
+	}
+	
+	public void saveUser(User user) {
+		em.getTransaction().begin();
+		em.persist(user);
+		em.getTransaction().commit();
+	}
 	
 	public void deleteUser(Integer id) {
 

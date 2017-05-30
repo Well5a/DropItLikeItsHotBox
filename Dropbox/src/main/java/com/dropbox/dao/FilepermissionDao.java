@@ -31,6 +31,9 @@ public class FilepermissionDao {
 		em.persist(fp);
 		em.getTransaction().commit();
 	}
+<<<<<<< HEAD
+}
+=======
 	
 	public void deleteFilepermission(Integer id) {
 		
@@ -42,3 +45,4 @@ public class FilepermissionDao {
 		}
 	}
 }
+>>>>>>> 35b6b15e60886912be18ed0c9330f2f8716e52c9
