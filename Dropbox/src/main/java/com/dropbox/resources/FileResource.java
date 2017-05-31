@@ -1,5 +1,8 @@
 package com.dropbox.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,12 +23,15 @@ import com.dropbox.dao.UserDao;
 import model.User;
 import model.File;
 
+import com.google.gson.Gson;
+
 //http://localhost:8080/Dropbox/file/Julian/home/test
-@Path("/file/{user}/{path}")
+@Path("/browse/{user}/{path}")
 public class FileResource 
 {
+	private String fileRoot;
+	
 	@GET
-	@Produces("/text/plain")
 	public Response getFile(@PathParam("user") String u, @PathParam("path") String p)
 	{
 		model.File file_owner = FileDao.getInstance().getFileByPath(p);
@@ -41,5 +47,33 @@ public class FileResource
 		return response.build();
 	}
 	
+	private class DirectoryResponse
+	{
+		private List<String> _childitems;
+		
+		public DirectoryResponse(java.io.File file, @PathParam("user") User u)
+		{
+			_childitems = new ArrayList<String>();
+			if (!file.isDirectory())
+				return;
+			
+			String [] allSubdirectories = file.list();
+			for (String path : allSubdirectories)
+			{
+				if (FileDao.getInstance().belongsToUser(path, u))
+				{
+					path.replace(fileRoot, "");
+					_childitems.add("/browse/" + path);
+				}
+			}
+		}
+		String json = new Gson().toJson(_childitems);
+		
+	}
 	
+	
+	FileResource(String root)
+	{
+		fileRoot = root;
+	}
 }
