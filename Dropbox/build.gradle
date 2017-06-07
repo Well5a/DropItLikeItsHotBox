@@ -14,6 +14,7 @@ repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -25,5 +26,16 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+    
+    // Use GSON Library
+    compile 'com.google.code.gson:gson:2.2.4'
+
+	compile group: 'org.eclipse.persistence', name: 'eclipselink', version: '2.5.2'
+
+	compile group: 'mysql',name: 'mysql-connector-java', version: '5.1.42'
+	
+	// https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+	compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0'
+	
 }
 
