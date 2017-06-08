@@ -1,8 +1,10 @@
 package com.dropbox.util;
 
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -15,7 +17,7 @@ import org.apache.commons.codec.binary.Hex;
 public class PasswordHasher
 {
 	private static final SecureRandom randomGenerator = new SecureRandom();
-	private static final String ALGORITHM = "SHA256";
+	private static final String ALGORITHM = "SHA-256";
 	
 	/**
 	 * Generates Random two-Byte value for salting the hashes
@@ -44,7 +46,7 @@ public class PasswordHasher
 			md.reset();
 			md.update(salt);
 			byte [] hashed = md.digest(pwd.getBytes());
-			return Hex.encodeHexString(salt) + '$' + Hex.encodeHexString(hashed);
+			return Hex.encodeHexString(salt) + '%' + Hex.encodeHexString(hashed);
 		}
 		catch (NoSuchAlgorithmException e)
 		{
@@ -64,14 +66,14 @@ public class PasswordHasher
 	{
 		try
 		{
-			String [] strings = hashed.split("$");
+			String [] strings = hashed.split("%");
 			byte [] salt = Hex.decodeHex(strings[0].toCharArray());
 			byte [] hash = Hex.decodeHex(strings[1].toCharArray());
 			
 			MessageDigest md = MessageDigest.getInstance(ALGORITHM);
 			md.reset();
 			md.update(salt);
-			if (md.digest(pwd.getBytes()).equals(hash))
+			if (Arrays.equals(md.digest(pwd.getBytes()), hash))
 				return true;
 			else 
 				return false;
