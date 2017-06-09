@@ -8,7 +8,7 @@ import javax.persistence.*;
 import com.google.common.hash.Hashing;
 
 import java.util.List;
-
+import com.dropbox.util.PasswordHasher;
 
 /**
  * The persistent class for the user database table.
@@ -60,9 +60,7 @@ public class User implements Serializable {
 	}
 
 	public void setPasswd(String passwd) {
-		String hashed = Hashing.sha256()
-							   .hashString(passwd, StandardCharsets.UTF_8)
-							   .toString();
+		String hashed = PasswordHasher.hashPassword(passwd);
 		this.passwd = hashed;
 	}
 
