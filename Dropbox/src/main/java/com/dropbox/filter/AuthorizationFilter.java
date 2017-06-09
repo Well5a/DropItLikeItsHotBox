@@ -60,7 +60,7 @@ class AuthorizationFilter implements Filter
 							 					 .getPermissionsOfUserForFile(
 							 							requestedFile.getOId()
 							 							, user.getOId());
-			if (fp.getAllowRead() != 0)
+			if (fp != null && fp.getAllowRead() != 0)
 			{
 				authorized = true;
 			}
