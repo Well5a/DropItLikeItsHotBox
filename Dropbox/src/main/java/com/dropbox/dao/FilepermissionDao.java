@@ -24,6 +24,12 @@ public class FilepermissionDao {
 		return singleton;
 	}
 	
+	public int getMaxOId()
+	{
+		Query q = em.createQuery("SELECT TOP 1 oID FROM dropbox.Filepermission ORDER BY oID desc");
+		return (int) q.getResultList().get(0);
+	}
+	
 	public Filepermission getFilepermission(Integer id) {
 		return em.find(Filepermission.class, id);
 	}
