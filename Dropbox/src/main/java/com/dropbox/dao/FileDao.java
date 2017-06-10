@@ -13,6 +13,7 @@ import model.File;
 public class FileDao {
 	private static EntityManager em;
 	private static FileDao singleton;
+	private static final String rootPath = "./files/";
 	
 	private FileDao() {
 		em = DaoManager.getInstance().getEntityManager();
@@ -34,6 +35,15 @@ public class FileDao {
 	
 	public File getFile(Integer id) {
 		return em.find(File.class, id);
+	}
+	
+	public java.io.File getFileFromFilesystem(File f)
+	{
+		if (em.contains(f))
+		{
+			return new java.io.File(rootPath + f.getPath());
+		}
+		else return null;
 	}
 	
 	public File getFileByPath(String path)
