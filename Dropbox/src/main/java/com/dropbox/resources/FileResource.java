@@ -98,7 +98,6 @@ public class FileResource
 		return result;
 	}
 	
-	
 	FileResource(String root)
 	{
 		fileRoot = root;
