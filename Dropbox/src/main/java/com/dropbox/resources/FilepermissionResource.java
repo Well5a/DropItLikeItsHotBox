@@ -78,14 +78,14 @@ public class FilepermissionResource {
 			fp.setFile(f);
 			fp.setUser(u);
 			fp.setAllowRead(read);
-			fp.setAllowRead(write);
+			fp.setAllowWrite(write);
 			
 			FilepermissionDao.getInstance().insertFilepermission(fp);
 		}
 		else //Filepermission existiert bereits
 		{
 			fp.setAllowRead(read);
-			fp.setAllowRead(write);
+			fp.setAllowWrite(write);
 		}
 	}
 	
@@ -142,7 +142,7 @@ public class FilepermissionResource {
 		else if((fp = FilepermissionDao.getInstance().getPermissionsOfUserForFile(f.getOId(), u.getOId())) != null)
 		{
 			fp.setAllowRead(read);
-			fp.setAllowRead(write);
+			fp.setAllowWrite(write);
 		}
 		return;
 	}
