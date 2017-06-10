@@ -33,10 +33,7 @@ public class Filepermission implements Serializable {
 	public Filepermission() {
 	}
 
-	public int getMaxOId()
-	{
-		Query q = new Query("SELECT TOP 1 oID FROM Filepermissiontable ORDER BY oID desc");
-	
+
 	public int getOId() {
 		return this.oId;
 	}
