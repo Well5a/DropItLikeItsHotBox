@@ -23,7 +23,7 @@ USE `dropbox` ;
 CREATE TABLE IF NOT EXISTS `dropbox`.`user` (
   `oId` INT(11) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
-  `passwd` VARCHAR(45) NOT NULL,
+  `passwd` VARCHAR(255) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`oId`))
 ENGINE = InnoDB
