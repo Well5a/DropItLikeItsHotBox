@@ -50,6 +50,21 @@ public class FileDao {
 		return files;
 	}
 	
+	public boolean belongsToUser(String path, model.User user)
+	{
+		java.io.File homeDir = new java.io.File("./files/" + user.getUsername());
+		
+		java.io.File requested = new java.io.File(path);
+		while(requested.getParent() != null)
+		{
+			if (requested.equals(homeDir))
+				return true;
+			requested = requested.getParentFile();
+		}
+		return false;
+	}
+	
+	
 	public void deleteFile(Integer id) {
 		
 		File f = em.find(File.class, id);
