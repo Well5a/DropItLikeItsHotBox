@@ -12,13 +12,13 @@ import javax.servlet.http.*;
 
 public class AuthenticationFilter implements Filter
 {
-
 	public final String loginURI = "/login.html";
+	private FilterConfig filterConfig;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		
+		this.filterConfig = filterConfig;
 	}
 
 	@Override

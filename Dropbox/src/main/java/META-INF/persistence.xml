@@ -3,17 +3,14 @@
 	<persistence-unit name="DropBox">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<class>model.Filepermission</class>
-		<class>model.FilepermissionPK</class>
 		<class>model.File</class>
-		<class>model.Groups</class>
-		<class>model.Usergroups</class>
 		<class>model.User</class>
 		<properties>
 			<property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dropbox"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="ballon#01"/>
+			<property name="javax.persistence.jdbc.password" value="IW3sp7mp"/>
 		</properties>
 	</persistence-unit>	
 </persistence>

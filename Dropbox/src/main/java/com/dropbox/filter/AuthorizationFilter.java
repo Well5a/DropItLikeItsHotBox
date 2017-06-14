@@ -19,13 +19,14 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-class AuthorizationFilter implements Filter
+public class AuthorizationFilter implements Filter
 {
-
+	private FilterConfig filterConfig;
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		
+		this.filterConfig = filterConfig;
 	}
 
 	@Override
