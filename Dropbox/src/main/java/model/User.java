@@ -1,9 +1,14 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
+import javax.persistence.*;
+
+import com.google.common.hash.Hashing;
+
+import java.util.List;
+import com.dropbox.util.PasswordHasher;
 
 /**
  * The persistent class for the user database table.
@@ -55,7 +60,8 @@ public class User implements Serializable {
 	}
 
 	public void setPasswd(String passwd) {
-		this.passwd = passwd;
+		String hashed = PasswordHasher.hashPassword(passwd);
+		this.passwd = hashed;
 	}
 
 	public String getUsername() {

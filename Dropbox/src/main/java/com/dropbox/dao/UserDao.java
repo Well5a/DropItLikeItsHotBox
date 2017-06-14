@@ -1,5 +1,7 @@
 package com.dropbox.dao;
 
+import java.security.SecureRandom;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -7,7 +9,7 @@ import com.dropbox.dao.DaoManager;
 
 import model.File;
 import model.User;
-
+import com.dropbox.util.PasswordHasher;
 
 public class UserDao {
 	private static EntityManager em;
@@ -56,5 +58,11 @@ public class UserDao {
 			em.remove(u);
 			em.getTransaction().commit();
 		}
-	}	
+	}
+	
+	public boolean authenticate(String username, String password)
+	{
+		User u = getUserByUsername(username);
+		return PasswordHasher.checkPassword(u.getPasswd(), password);
+	}
 }

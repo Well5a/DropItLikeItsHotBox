@@ -1,5 +1,10 @@
 package com.dropbox.resources;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,53 +29,74 @@ import model.User;
 import model.File;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 //http://localhost:8080/Dropbox/file/Julian/home/test
-@Path("/browse/{user}/{path}")
+@Path("/browse/{path}")
 public class FileResource 
 {
 	private String fileRoot;
+	private FileDao dao = FileDao.getInstance();
 	
 	@GET
-	public Response getFile(@PathParam("user") String u, @PathParam("path") String p)
+	public Response getFile(@PathParam("path") String p)
 	{
-		model.File file_owner = FileDao.getInstance().getFileByPath(p);
-		if (!file_owner.getUser().getUsername().matches(u))
-			return null;
-		java.io.File result = new java.io.File(p);
-		
-		if (!result.exists()) 
-			return null;
-		
-		ResponseBuilder response = Response.ok((Object) result);
-		response.header("Content-Disposition", "attacchment; filename=\"" +  result.getName() + "\"");
+		File requested;
+		java.io.File fsFile;
+		ResponseBuilder response = Response.ok();
+		if ((requested = dao.getFileByPath(p)) != null)
+		{
+			fsFile = dao.getFileFromFilesystem(requested);
+			
+			response = Response.ok();
+			if (fsFile.isDirectory())
+			{
+				response.entity(toJsonDirectory(fsFile));
+			}
+			else
+			{
+				byte [] bytes = new byte[(int)fsFile.length()];
+				try {
+					FileInputStream fis = new FileInputStream(fsFile);
+					fis.read(bytes);
+				}
+				catch (IOException e){
+					e.printStackTrace();
+				}
+			}
+			 Response.ok();
+			response.header("Content-Disposition", "attachment; filename=\"" +  fsFile.getName() + "\"");
+		}
 		return response.build();
 	}
 	
-	private class DirectoryResponse
+	private JsonObject toJsonDirectory(java.io.File dir)
 	{
-		private List<String> _childitems;
-		
-		public DirectoryResponse(java.io.File file, @PathParam("user") User u)
+		JsonObject result = null;
+		if (dir.isDirectory())
 		{
-			_childitems = new ArrayList<String>();
-			if (!file.isDirectory())
-				return;
-			
-			String [] allSubdirectories = file.list();
-			for (String path : allSubdirectories)
+			result = new JsonObject();
+			result.addProperty("path", dir.getPath());
+			if (dir.listFiles().length != 0)
 			{
-				if (FileDao.getInstance().belongsToUser(path, u))
+				result.add("subdirectories", new JsonArray());
+				for (java.io.File f : dir.listFiles())
 				{
-					path.replace(fileRoot, "");
-					_childitems.add("/browse/" + path);
+					try
+					{
+						result.getAsJsonArray("subdirectories").add(f.getCanonicalPath());
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-		String json = new Gson().toJson(_childitems);
-		
+		return result;
 	}
-	
 	
 	FileResource(String root)
 	{
