@@ -1,0 +1,20 @@
+#header{
+	position: fixed;
+	float: top;
+	width: 100%;
+	padding-top: 0;
+	background-color: blue;
+}
+
+#header h1 {
+	display: block;
+	position: relative;
+  
+	font-family: helvetica;
+	font-size: 40px;
+}
+
+#login{
+	position: relative;
+	padding-top: 7em;
+}

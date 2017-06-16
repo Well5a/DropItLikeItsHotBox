@@ -51,9 +51,12 @@ dependencies {
 	compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.23.2'
 
 	// https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version: '2.23.2'
+	
+	// https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.23.2'
 
-	// https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet
-	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version: '2.23.2'
+	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.23.2'
+	
 }
 

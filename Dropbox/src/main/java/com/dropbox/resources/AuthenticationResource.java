@@ -21,7 +21,7 @@ public class AuthenticationResource
 	@Context
 	Request request;
 	
-	@Path("login")
+	@Path("/login")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(JsonObject json)
@@ -38,7 +38,7 @@ public class AuthenticationResource
 	}
 	
 	
-	@Path("logout")
+	@Path("/logout")
 	public Response logoutUser()
 	{
 		HttpSession session = ((HttpServletRequest)request).getSession();
