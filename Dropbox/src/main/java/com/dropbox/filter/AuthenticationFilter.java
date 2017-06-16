@@ -12,7 +12,7 @@ import javax.servlet.http.*;
 
 public class AuthenticationFilter implements Filter
 {
-	public final String loginURI = "/login.html";
+	public final String loginURI = "/DropBox/login.html";
 	private FilterConfig filterConfig;
 	
 	@Override

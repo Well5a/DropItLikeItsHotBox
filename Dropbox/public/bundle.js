@@ -4983,7 +4983,12 @@
 	                _react2.default.createElement('br', null),
 	                'password:',
 	                _react2.default.createElement('input', { id: 'login_pwd', type: 'password', name: 'password' }),
-	                _react2.default.createElement('button', { label: 'submit', onClick: this.handleLogin })
+	                _react2.default.createElement('br', null),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.handleLogin },
+	                    'login'
+	                )
 	            );
 	        }
 	    }, {

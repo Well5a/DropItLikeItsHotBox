@@ -29,7 +29,7 @@ public class AuthenticationResource
 		HttpSession session = ((HttpServletRequest)request).getSession();
 		if (session.getAttribute("user") != null)
 			return Response.noContent().build();
-		String username = json.get("user").getAsString();
+		String username = json.get("username").getAsString();
 		String password = json.get("password").getAsString();
 		
 		if(UserDao.getInstance().authenticate(username, password))

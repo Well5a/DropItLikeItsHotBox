@@ -32,9 +32,10 @@ public class UserDao {
 	
 	public User getUserByUsername(String username)
 	{
-		Query q = em.createQuery("SELECT * FROM user WHERE user.username = :username");
+		Query q = em.createQuery("SELECT u FROM User u WHERE u.username LIKE :username");
 		q.setParameter("username", username);
-		return (User)q.getResultList().get(0);
+		return q.getResultList().isEmpty() ? 
+				null : (User)q.getResultList().get(0);
 	}
 	
 	public void insertUser(User u)

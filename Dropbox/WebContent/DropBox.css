@@ -18,3 +18,14 @@
 	position: relative;
 	padding-top: 7em;
 }
+
+#login button{
+	margin-top: 0.4em;
+	margin-left: 5em;
+	width:5em;
+	height:1.4em;
+}
+
+#login input {
+	margin: 0.2em;
+}

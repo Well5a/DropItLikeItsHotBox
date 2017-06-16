@@ -39,9 +39,10 @@ public class AuthorizationFilter implements Filter
 		HttpServletResponse response = (HttpServletResponse) res; 
 		
 		//Es handelt sich garnicht um eine Dateiabfrage
-		if (!request.getContextPath().startsWith("/browse"))
+		if (!request.getRequestURI().startsWith("/DropBox/rest/browse"))
 		{
 			chain.doFilter(request, response); //nächster Filter
+			return;
 		}
 			
 		String filepath = request.getContextPath().replace("/browse", "");
@@ -49,6 +50,13 @@ public class AuthorizationFilter implements Filter
 		
 		User user = UserDao.getInstance().getUserByUsername(username);
 		File requestedFile = FileDao.getInstance().getFileByPath(filepath);
+		
+		if (requestedFile == null || user == null)
+		{
+			response.setStatus(404);
+			chain.doFilter(request, response);
+			return;
+		}
 		
 		// dem User gehört die Datei
 		authorized = requestedFile.getUser().equals(user);

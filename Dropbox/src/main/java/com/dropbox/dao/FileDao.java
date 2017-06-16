@@ -48,9 +48,9 @@ public class FileDao {
 	
 	public File getFileByPath(String path)
 	{
-		Query q = em.createQuery("SELECT * FROM file WHERE file.path = :path");
+		Query q = em.createQuery("SELECT f FROM File f WHERE f.path LIKE :path");
 		q.setParameter("path", path);
-		return (File)q.getResultList().get(0);
+		return q.getResultList().isEmpty() ? null : (File)q.getResultList().get(0);
 	}
 	
 	

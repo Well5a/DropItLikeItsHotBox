@@ -15,8 +15,8 @@ class Login extends React.Component
         return(
                 <div>
                     username:<input id="login_uname" type="text" name="user"/><br/>
-                    password:<input id="login_pwd" type="password" name="password"/>
-                    <button label="submit" onClick={this.handleLogin}/>
+                    password:<input id="login_pwd" type="password" name="password"/><br/>
+                    <button onClick={this.handleLogin}>login</button>
                 </div>
         );
     }

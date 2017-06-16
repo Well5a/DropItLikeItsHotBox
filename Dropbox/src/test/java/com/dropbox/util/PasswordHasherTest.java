@@ -8,7 +8,7 @@ import org.junit.Test;
 
 public class PasswordHasherTest {
 
-	String password1 = "testPassw0rt1";
+	String password1 = "1452";
 	String password2 = "ganzAnd3r3sPaswd!!!";
 	
 	@Test
