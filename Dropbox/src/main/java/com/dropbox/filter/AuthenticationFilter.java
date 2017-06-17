@@ -13,6 +13,8 @@ import javax.servlet.http.*;
 public class AuthenticationFilter implements Filter
 {
 	public final String loginURI = "/DropBox/login.html";
+	public final String authURI = "/DropBox/rest/authenticate/login";
+	
 	private FilterConfig filterConfig;
 	
 	@Override
@@ -30,7 +32,8 @@ public class AuthenticationFilter implements Filter
 		HttpSession session = request.getSession();
 		
 		boolean loggedIn = session != null && session.getAttribute("user") != null;
-        boolean loginRequest = request.getRequestURI().equals(loginURI);
+        boolean loginRequest = request.getRequestURI().equals(loginURI) 
+        						|| request.getRequestURI().equals(authURI);
 
         if (loggedIn || loginRequest) {
             chain.doFilter(request, response);

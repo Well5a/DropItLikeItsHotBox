@@ -8,9 +8,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -34,13 +36,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 //http://localhost:8080/Dropbox/file/Julian/home/test
-@Path("/browse/{path}")
+@Path("/box")
 public class FileResource 
 {
-	private String fileRoot;
+	private final String fileRoot = "./files/";
 	private FileDao dao = FileDao.getInstance();
 	
+	@Context
+	HttpServletRequest request;
+	
 	@GET
+	@Path("/browse/{path}")
 	public Response getFile(@PathParam("path") String p)
 	{
 		File requested;
@@ -61,15 +67,53 @@ public class FileResource
 				try {
 					FileInputStream fis = new FileInputStream(fsFile);
 					fis.read(bytes);
+					response.entity(bytes);
+					fis.close();
 				}
 				catch (IOException e){
 					e.printStackTrace();
 				}
 			}
-			 Response.ok();
 			response.header("Content-Disposition", "attachment; filename=\"" +  fsFile.getName() + "\"");
 		}
 		return response.build();
+	}
+	
+	@POST
+	@Path("/insertFile/{path}")
+	public Response addFile(byte [] data, @PathParam("path") String path)
+	{
+		if (dao.getFileByPath(path) == null)
+		{
+			User user = UserDao.getInstance().getUserByUsername(
+												(String)request.getSession(false)
+												.getAttribute("user")
+												);
+			if(data.length == 0)
+				dao.createFile(path, user);
+			else
+				dao.createFile(path, user, data);
+			return Response.ok().build();
+		}
+		return Response.status(404).build();
+	}
+	
+	@GET
+	@Path("/insertDir/{path}")
+	public Response addDirectory(@PathParam("path") String path)
+	{
+		if (dao.getFileByPath(path) == null)
+		{
+			User user = UserDao.getInstance().getUserByUsername(
+												(String)request.getSession(false)
+												.getAttribute("user")
+												);
+			if (user != null){
+				dao.createDirectory(path, user);
+				return Response.ok().build();
+			}
+		}
+		return Response.status(404).build();
 	}
 	
 	private JsonObject toJsonDirectory(java.io.File dir)
@@ -96,10 +140,5 @@ public class FileResource
 			}
 		}
 		return result;
-	}
-	
-	FileResource(String root)
-	{
-		fileRoot = root;
 	}
 }

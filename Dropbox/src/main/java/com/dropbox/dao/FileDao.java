@@ -1,5 +1,7 @@
 package com.dropbox.dao;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,6 +10,7 @@ import javax.persistence.Query;
 import com.dropbox.dao.DaoManager;
 
 import model.File;
+import model.User;
 
 
 public class FileDao {
@@ -26,11 +29,80 @@ public class FileDao {
 		return singleton;
 	}
 	
-	public void insertFile(File f)
+	public void createFile(String path, User user)
 	{
+		File f = new File();
+		f.setPath(path);
+		f.setUser(user);
+		insertFile(f);
+	}
+	
+	public void createDirectory(String path, User user)
+	{
+		File f = new File();
+		f.setPath(path);
+		f.setUser(user);
+		insertDirectory(f);
+	}
+	
+	public void createFile(String path, User user, byte [] data)
+	{
+		File f = new File();
+		f.setPath(path);
+		f.setUser(user);
+		insertFile(f, data);
+	}
+	
+	public void persistFileDescriptor(File f)
+	{
+		f.setOId(getMaxId() + 1);
 		em.getTransaction().begin();
 		em.persist(f);
 		em.getTransaction().commit();
+	}
+	
+	public void insertDirectory(File f)
+	{
+		java.io.File file = createIoFile(f.getPath());
+		if (file.exists())
+			return;
+		try {
+			addDirectoryToFilesystem(file);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		persistFileDescriptor(f);
+	}
+	
+	public void insertFile(File f)
+	{
+		java.io.File file = createIoFile(f.getPath());
+		if (file.exists())
+			return;
+		try {
+			makeDirectories(file);
+			addFileToFilesystem(file);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		persistFileDescriptor(f);
+	}
+	
+	public void insertFile(File f, byte [] bytes)
+	{
+		java.io.File file = createIoFile(f.getPath());
+		if (file.exists())
+			return;
+		try {
+			makeDirectories(file);
+			addFileToFilesystem(file, bytes);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		persistFileDescriptor(f);
 	}
 	
 	public File getFile(Integer id) {
@@ -54,6 +126,7 @@ public class FileDao {
 	}
 	
 	
+	
 	public List<File> getFiles() {
 		Query q = em.createQuery("select u from user u");
 		List<File> files = q.getResultList();
@@ -62,7 +135,7 @@ public class FileDao {
 	
 	public boolean belongsToUser(String path, model.User user)
 	{
-		java.io.File homeDir = new java.io.File("./files/" + user.getUsername());
+		java.io.File homeDir = createIoFile(path);
 		
 		java.io.File requested = new java.io.File(path);
 		while(requested.getParent() != null)
@@ -84,5 +157,81 @@ public class FileDao {
 			em.getTransaction().commit();
 		}
 	}
+	
+	public int getMaxId()
+	{
+		Query q = em.createNativeQuery("SELECT * FROM dropbox.file ORDER BY oId DESC LIMIT 1");
+		return (int)q.getResultList().get(0);
+	}
+	
+	private java.io.File createIoFile(String path)
+	{
+		return new java.io.File(rootPath + path);
+	}
+	
+	private boolean addDirectoryToFilesystem(java.io.File f)
+	{
+		makeDirectories(f);
+		try{
+			if (!f.mkdir())
+			{
+				throw new IllegalStateException("Couldn't create dir: " + f);
+			}
+		}
+		catch( IllegalStateException e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean addFileToFilesystem(java.io.File f)
+	{
+		makeDirectories(f);
+		try{
+			if (f.isDirectory() && !f.mkdir())
+			{
+				throw new IllegalStateException("Couldn't create dir: " + f);
+			}
+			else if(f.isFile() && !f.createNewFile())
+			{
+				throw new IllegalStateException("Couldn't create file: " + f);
+			}
+		}
+		catch( IllegalStateException | IOException e){
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean addFileToFilesystem(java.io.File f, byte [] bytes)
+	{
+		if (!f.exists() && !f.isDirectory())
+		{
+			try{
+				FileOutputStream fos = new FileOutputStream(f);
+				makeDirectories(f);
+				f.createNewFile();
+				fos.write(bytes);
+				fos.close();
+			}catch(IOException e){
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private void makeDirectories(java.io.File f) throws IllegalStateException
+	{
+		java.io.File parent = f.getParentFile();
+		if (!parent.exists() && !parent.mkdirs()) {
+		    throw new IllegalStateException("Couldn't create dir: " + parent);
+		}
+	}
+	
 }
+
 	

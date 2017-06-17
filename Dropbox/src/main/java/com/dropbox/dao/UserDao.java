@@ -38,6 +38,14 @@ public class UserDao {
 				null : (User)q.getResultList().get(0);
 	}
 	
+	public User getUserByEmail(String email)
+	{
+		Query q = em.createQuery("SELECT u FROM User u WHERE u.email LIKE :email");
+		q.setParameter("email", email);
+		return q.getResultList().isEmpty() ? 
+				null : (User)q.getResultList().get(0);
+	}
+	
 	public void insertUser(User u)
 	{
 		em.getTransaction().begin();
@@ -61,9 +69,23 @@ public class UserDao {
 		}
 	}
 	
+	public Integer getMaxId()
+	{
+		Query q = em.createNativeQuery("SELECT oId FROM dropbox.user ORDER BY oId DESC LIMIT 1");
+		
+		if (!q.getResultList().isEmpty())
+		{
+			int ret = (Integer)q.getResultList().get(0);
+			return ret;
+		}
+		return 0;
+	}
+	
 	public boolean authenticate(String username, String password)
 	{
-		User u = getUserByUsername(username);
+		User u;
+		if ((u = getUserByUsername(username))== null)
+			return false;
 		return PasswordHasher.checkPassword(u.getPasswd(), password);
 	}
 }
