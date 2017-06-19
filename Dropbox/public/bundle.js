@@ -104,8 +104,8 @@
 	            loggedin: false,
 	            browsing: false,
 	            username: ""
-	        };
-	        _this.loginCallback = _this.loginCallback.bind(_this);
+	            //Bind callback functions
+	        };_this.loginCallback = _this.loginCallback.bind(_this);
 	        _this.logoutHandler = _this.logoutHandler.bind(_this);
 	        _this.authenticationCallback = _this.authenticationCallback.bind(_this);
 	        _this.checkAuthentication();
