@@ -87,6 +87,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/**
+	 * Main class for Dropbox web application
+	 * 
+	 * @author David Schick
+	 */
 	var App = function (_React$Component) {
 	    _inherits(App, _React$Component);
 	
@@ -117,6 +122,11 @@
 	                this.renderMain()
 	            );
 	        }
+	
+	        /**
+	         * checks if client is already logged in
+	         */
+	
 	    }, {
 	        key: 'checkAuthentication',
 	        value: function checkAuthentication() {
@@ -124,6 +134,13 @@
 	                this.authenticationCallback(response);
 	            }.bind(this));
 	        }
+	
+	        /**
+	         * callback for authentication resource
+	         * 
+	         * @param {any} response
+	         */
+	
 	    }, {
 	        key: 'authenticationCallback',
 	        value: function authenticationCallback(response) {
@@ -147,6 +164,11 @@
 	                this.setState({ browsing: false });
 	            }
 	        }
+	
+	        /**
+	         * render main part of the application
+	         */
+	
 	    }, {
 	        key: 'renderMain',
 	        value: function renderMain() {
@@ -177,6 +199,11 @@
 	                );
 	            } else return;
 	        }
+	
+	        /**
+	         * handler for logout button
+	         */
+	
 	    }, {
 	        key: 'logoutHandler',
 	        value: function logoutHandler() {
@@ -184,6 +211,11 @@
 	                this.setState({ loggedin: false });
 	            }.bind(this));
 	        }
+	
+	        /**
+	         * render filebrowser
+	         */
+	
 	    }, {
 	        key: 'renderBrowser',
 	        value: function renderBrowser() {
@@ -194,6 +226,11 @@
 	                    home: this.state.username })
 	            );
 	        }
+	
+	        /**
+	         * render Login form
+	         */
+	
 	    }, {
 	        key: 'renderLogIn',
 	        value: function renderLogIn() {
@@ -4967,9 +5004,18 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/**
+	 * Login form for DropBox client.
+	 * 
+	 * @author David Schick
+	 */
 	var Login = function (_React$Component) {
 	    _inherits(Login, _React$Component);
 	
+	    /**
+	     * Constructs new Login form
+	     * @param {any} props callback for Login call
+	     */
 	    function Login(props) {
 	        _classCallCheck(this, Login);
 	
@@ -4998,9 +5044,15 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * handler for login button
+	         */
+	
 	    }, {
 	        key: 'handleLogin',
 	        value: function handleLogin() {
+	            //values to be send in post-body to the server
 	            var payload = {
 	                username: document.getElementById("login_uname").value,
 	                password: document.getElementById("login_pwd").value
@@ -6655,6 +6707,12 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/**
+	 * React Component for browsing directories
+	 * of the DropBox Service
+	 * 
+	 * @author David Schick
+	 */
 	var Browser = function (_React$Component) {
 	    _inherits(Browser, _React$Component);
 	
@@ -6708,6 +6766,11 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * Render addFile div
+	         */
+	
 	    }, {
 	        key: 'renderAddFile',
 	        value: function renderAddFile() {
@@ -6721,11 +6784,24 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * clickhandler for #addFileButton
+	         */
+	
 	    }, {
 	        key: 'toggleShowFileAddMenu',
 	        value: function toggleShowFileAddMenu() {
 	            if (this.state.showAddFile) this.setState({ showAddFile: false });else this.setState({ showAddFile: true });
 	        }
+	
+	        /**
+	         * renders subdirectory of server response
+	         * as html list element.
+	         * 
+	         * @param {any} subdirectory directory to be rendered
+	         */
+	
 	    }, {
 	        key: 'renderListElement',
 	        value: function renderListElement(subdirectory) {
@@ -6743,6 +6819,14 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * fetches subdirectories of directory
+	         * and sets state to new directory
+	         * 
+	         * @param {any} directorypath path to new directory
+	         */
+	
 	    }, {
 	        key: 'getDirectory',
 	        value: function getDirectory(directorypath) {
@@ -6757,12 +6841,6 @@
 	                    }
 	            }.bind(this));
 	        }
-	        /*
-	        downloadFile(path)
-	        {
-	            window.location(path);
-	        }*/
-	
 	    }]);
 	
 	    return Browser;

@@ -5,7 +5,11 @@ import axios from 'axios'
 
 import {render} from 'react-dom';
 
-
+/**
+ * Main class for Dropbox web application
+ * 
+ * @author David Schick
+ */
 class App extends React.Component
 {
     constructor(props)
@@ -32,6 +36,9 @@ class App extends React.Component
                 );
     }
     
+    /**
+     * checks if client is already logged in
+     */
     checkAuthentication()
     {
         axios.get("/DropBox/rest/authenticate")
@@ -43,6 +50,11 @@ class App extends React.Component
                 );
     }
     
+    /**
+     * callback for authentication resource
+     * 
+     * @param {any} response
+     */
     authenticationCallback(response)
     {
         if (response.status < 300)
@@ -72,6 +84,9 @@ class App extends React.Component
         }
     }
     
+    /**
+     * render main part of the application
+     */
     renderMain()
     {
         if(!this.state.loggedin)
@@ -99,6 +114,9 @@ class App extends React.Component
             return;
     }
     
+    /**
+     * handler for logout button
+     */
     logoutHandler()
     {
         axios.get("/DropBox/rest/authenticate/logout")
@@ -110,6 +128,9 @@ class App extends React.Component
             );
     }
     
+    /**
+     * render filebrowser
+     */
     renderBrowser()
     {
         return (
@@ -121,6 +142,9 @@ class App extends React.Component
         );
     }
     
+    /**
+     * render Login form
+     */
     renderLogIn()
     {
         return (
