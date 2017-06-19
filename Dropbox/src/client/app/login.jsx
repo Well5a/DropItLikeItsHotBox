@@ -1,23 +1,22 @@
 import React from 'react'
-import {render} from 'react-dom'
 import axios from 'axios'
 
 class Login extends React.Component
 {
-    constructor(callback)
+    constructor(props)
     {
-        super();
-        this.callback = callback;
+        super(props);
+        this.handleLogin = this.handleLogin.bind(this);
     }
     
     render()
     {
         return(
-                <div>
-                    username:<input id="login_uname" type="text" name="user"/><br/>
-                    password:<input id="login_pwd" type="password" name="password"/><br/>
-                    <button onClick={this.handleLogin}>login</button>
-                </div>
+               <div>
+                   Username:   <input id="login_uname" type="text" name="user"/><br/>
+                   Password:   <input id="login_pwd" type="password" name="password"/><br/>
+                               <button onClick={this.handleLogin}>login</button>
+               </div> 
         );
     }
     
@@ -29,7 +28,10 @@ class Login extends React.Component
         }
         
         axios.post("/DropBox/rest/authenticate/login", payload)
-            .then(this.callback(response, payload));      
+            .then(function(response){
+                this.props.callback(response);
+            }.bind(this)
+        );      
     }
 }
 export default Login;

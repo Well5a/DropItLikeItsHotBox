@@ -39,24 +39,34 @@ import com.google.gson.JsonObject;
 @Path("/box")
 public class FileResource 
 {
-	private final String fileRoot = "./files/";
 	private FileDao dao = FileDao.getInstance();
 	
 	@Context
 	HttpServletRequest request;
 	
+	/**
+	 * Resource handler for browsing the dropbox.
+	 * Returns the File or Directory associated with
+	 * parameter path
+	 * 
+	 * @param p path to the file or directory
+	 * @return file or json representation of directory
+	 */
 	@GET
-	@Path("/browse/{path}")
+	@Path("/browse/{path : .+}")
 	public Response getFile(@PathParam("path") String p)
 	{
 		File requested;
 		java.io.File fsFile;
 		ResponseBuilder response = Response.ok();
+		//file exists
 		if ((requested = dao.getFileByPath(p)) != null)
 		{
+			//get file form filesystem
 			fsFile = dao.getFileFromFilesystem(requested);
 			
-			response = Response.ok();
+			if (!fsFile.exists())
+				return Response.status(404).build();
 			if (fsFile.isDirectory())
 			{
 				response.entity(toJsonDirectory(fsFile));
@@ -74,71 +84,106 @@ public class FileResource
 					e.printStackTrace();
 				}
 			}
-			response.header("Content-Disposition", "attachment; filename=\"" +  fsFile.getName() + "\"");
+			response.header("Content-disposition", "attachment; filename=" +  fsFile.getName());
+			response.header("Content-Type", "text/plain");
 		}
+		else
+			return response.status(404).build();
 		return response.build();
 	}
 	
-	@POST
-	@Path("/insertFile/{path}")
-	public Response addFile(byte [] data, @PathParam("path") String path)
+	@DELETE
+	@Path("/remove/{path : .+}")
+	public Response removeFile(@PathParam("path") String p)
 	{
-		if (dao.getFileByPath(path) == null)
+		File requested = dao.getFileByPath(p);
+		java.io.File fsFile;
+		ResponseBuilder response = Response.ok();
+		//file exists
+		dao.deleteFile(requested);
+		return response.build();
+	}
+	
+	/**
+	 * Resource handler for inserting Files into the
+	 * Dropbox.
+	 * 
+	 * @param data bytes of file
+	 * @param path path of file
+	 * @return status 200 on success, status 404 if file alreay exists
+	 */
+	@POST
+	@Path("/insertFile/{path : .+}")
+	public Response addFile(byte [] data, @PathParam("path")String p)
+	{
+		if (dao.getFileByPath(p) == null)
 		{
 			User user = UserDao.getInstance().getUserByUsername(
 												(String)request.getSession(false)
 												.getAttribute("user")
 												);
 			if(data.length == 0)
-				dao.createFile(path, user);
+				dao.createFile(p, user);
 			else
-				dao.createFile(path, user, data);
+				dao.createFile(p, user, data);
 			return Response.ok().build();
 		}
 		return Response.status(404).build();
 	}
 	
-	@GET
-	@Path("/insertDir/{path}")
-	public Response addDirectory(@PathParam("path") String path)
+	/**
+	 * inserts a new directory into the Dropbox.
+	 * 
+	 * @param path path to new directory
+	 * @return status 200 on success, else 404 
+	 */
+	@POST
+	@Path("/insertDir/{path : .+}")
+	public Response addDirectory(@PathParam("path")String p)
 	{
-		if (dao.getFileByPath(path) == null)
+		if (dao.getFileByPath(p) == null)
 		{
 			User user = UserDao.getInstance().getUserByUsername(
 												(String)request.getSession(false)
 												.getAttribute("user")
 												);
 			if (user != null){
-				dao.createDirectory(path, user);
+				dao.createDirectory(p, user);
 				return Response.ok().build();
 			}
 		}
 		return Response.status(404).build();
 	}
 	
-	private JsonObject toJsonDirectory(java.io.File dir)
+	/**
+	 * Creates a JSON Object representing the designated
+	 * directory.
+	 * 
+	 * @param dir path to directory
+	 * @return json representation of directory
+	 */
+	private String toJsonDirectory(java.io.File dir)
 	{
 		JsonObject result = null;
 		if (dir.isDirectory())
 		{
 			result = new JsonObject();
-			result.addProperty("path", dir.getPath());
+			result.addProperty("path", toResourcePath(dir.getPath()));
+			
 			if (dir.listFiles().length != 0)
 			{
 				result.add("subdirectories", new JsonArray());
 				for (java.io.File f : dir.listFiles())
 				{
-					try
-					{
-						result.getAsJsonArray("subdirectories").add(f.getCanonicalPath());
-					}
-					catch (IOException e)
-					{
-						e.printStackTrace();
-					}
+					result.getAsJsonArray("subdirectories").add(toResourcePath(f.getPath()));	
 				}
 			}
 		}
-		return result;
+		return result.toString();
+	}
+	
+	private String toResourcePath(String path)
+	{
+		return new String(path).replace(dao.getFileRoot(), "");
 	}
 }

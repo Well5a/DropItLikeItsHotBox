@@ -1,5 +1,8 @@
 import React from 'react';
 import Login from './login.jsx'
+import Browser from './browser.jsx'
+import axios from 'axios'
+
 import {render} from 'react-dom';
 
 
@@ -9,74 +12,113 @@ class App extends React.Component
     {
         super(props);
         this.state = {
-            loggedIn: false,
+            loggedin: false,
             browsing: false,
-            username: "",
-            password: "",
-            currentDirectory: ""
+            username: ""
         }
+        this.loginCallback = this.loginCallback.bind(this);
+        this.logoutHandler = this.logoutHandler.bind(this);
+        this.authenticationCallback = this.authenticationCallback.bind(this);
+        this.checkAuthentication();
     }
     
     render()
     {
-        return <div id="app_main">{this.renderMain()}</div>;
+        return (
+                <div id="app_main">
+                    {this.renderLoggedInBar()}
+                    {this.renderMain()}
+                </div>
+                );
     }
     
-    loginCallback(response, payload)
+    checkAuthentication()
     {
-        if (response.data.code == 200)
+        axios.get("/DropBox/rest/authenticate")
+            .then(
+                    function (response)
+                    {
+                        this.authenticationCallback(response);
+                    }.bind(this)
+                );
+    }
+    
+    authenticationCallback(response)
+    {
+        if (response.status < 300)
         {
-            this.setState("loggedIn", true);
-            this.setState("currentDirectory", fetchDirectroy(username));
-            this.setState("browsing", true);
-            this.setState("username", payload.username);
-            this.setState("password", payload.password);
+            this.setState({username: response.data});
+            this.setState({loggedin: true});
+        }
+        else
+            this.setState({loggedin: false});
+    }
+    
+    loginCallback(response)
+    {
+        //alert(response.data.username + " " + response.data.password);
+        if (response.status > 199 && response.status < 300)
+        {
+            console.log("setting current dir...");
+            this.setState({username: response.data.username});
+            this.setState({browsing: true});
+            this.setState({loggedin: true});
         }
         else
         {
-            this.setState("username", "");
-            this.setState("password", "");
-            this.setState("loggedIn", false);
-            this.setState("browsing", false);
+            this.setState({username: ""});
+            this.setState({loggedIn: false});
+            this.setState({browsing: false});
         }
     }
     
     renderMain()
     {
-        if(!this.state.loggedIn)
+        if(!this.state.loggedin)
         {
             return this.renderLogIn();
         }
-        else if(!this.state.browsing)
+        else
         {
-            this.fetchDirectory(username);
+            return this.renderBrowser();
         }
     }
     
-    fetchDirectory(uri)
+    renderLoggedInBar()
     {
-        this.setState("currentDirectory", fetch("/browse/" + uri)
-                            .then = (response) => { this.state.browsing = true }
-                            );
+        if (this.state.loggedin)
+        {
+            return(
+                    <div id="loggedInBar">
+                        <p>logged in as: {this.state.username}</p>
+                        <a href="#" onClick={this.logoutHandler}>(logout)</a>
+                    </div>
+                 );
+        }
+        else
+            return;
     }
     
-    toListItem(c)
+    logoutHandler()
+    {
+        axios.get("/DropBox/rest/authenticate/logout")
+            .then(
+                    function (response)
+                    {
+                        this.setState({loggedin:false});
+                    }.bind(this)
+            );
+    }
+    
+    renderBrowser()
     {
         return (
-            <li class={c.type}><a href={c.path}>{c.path}</a></li>
+                <div>
+                    <Browser
+                        home={this.state.username}>
+                    </Browser>
+                </div>
         );
-    }
-    
-    renderDirectory()
-    {
-        var path = this.state.currentDirectory.path;
-        var childitems = this.state.currentDirectory.children;
-        
-        var res = <div><ul>;
-        for (child c : childitems)
-            res += toListItem(c);
-        
-        return res += </ul></div>
     }
     
     renderLogIn()
@@ -90,27 +132,6 @@ class App extends React.Component
         );
     }
     
-    handleLogin(response, payload)
-    {
-        axios.post("./authenticate/login", payload)
-            .then(
-                function(response)
-                {
-                    if (response.data.code == 200)
-                    {
-                        this.setState("loggedIn", true);
-                        this.setState("currentDirectory", fetchDirectroy(username));
-                        this.setState("browsing", true);
-                    }
-                    else
-                    {
-                        this.setState("username", "");
-                        this.setState("password", "");
-                        this.setState("loggedIn", false);
-                        this.setState("browsing", false);
-                    }
-                });      
-    }
 };
 
 render(<App/>, document.getElementById("App"));

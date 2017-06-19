@@ -12,8 +12,12 @@ import javax.servlet.http.*;
 
 public class AuthenticationFilter implements Filter
 {
-	public final String loginURI = "/DropBox/login.html";
-	public final String authURI = "/DropBox/rest/authenticate/login";
+	public final String [] whitelist = {
+			"/DropBox/login.html",
+			"/DropBox/rest/authenticate/login",
+			"/DropBox/rest/authenticate/logout",
+			"/DropBox/rest/authenticate"
+	};
 	
 	private FilterConfig filterConfig;
 	
@@ -32,16 +36,25 @@ public class AuthenticationFilter implements Filter
 		HttpSession session = request.getSession();
 		
 		boolean loggedIn = session != null && session.getAttribute("user") != null;
-        boolean loginRequest = request.getRequestURI().equals(loginURI) 
-        						|| request.getRequestURI().equals(authURI);
+        boolean loginRequest = checkWhitelisted(request.getRequestURI());
 
         if (loggedIn || loginRequest) {
             chain.doFilter(request, response);
         } else {
-            response.sendRedirect(loginURI);
+            response.setStatus(401);
         }
 	}
 
+	private boolean checkWhitelisted(String requestUri)
+	{
+		for (String uri : whitelist)
+		{
+			if (uri.equals(requestUri))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub

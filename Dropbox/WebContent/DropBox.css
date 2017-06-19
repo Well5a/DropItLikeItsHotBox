@@ -1,8 +1,15 @@
+/* File Dropbox.css: stylesheet for the DropBox web-application*/
+
+body {
+	font-family: helvetica;
+  margin: 0px;
+}
+
 #header{
 	position: fixed;
-	float: top;
+	float: left;
 	width: 100%;
-	padding-top: 0;
+	margin-top: 0;
 	background-color: blue;
 }
 
@@ -15,8 +22,32 @@
 }
 
 #login{
+	display:block;
+	background-color: #fff;
+	margin-top: 25%;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 14em;
 	position: relative;
-	padding-top: 7em;
+	float: center;
+  padding: 1em;
+	border: 2px solid #555;
+	border-radius: 25px;
+}
+
+#app_main{
+	float: left;
+	position: relative;
+	padding: 1em;
+	margin-top: 6.3em;
+  display: block;
+	background-color: #DDD;
+	max-width: 60em;
+	min-width: 40em;
+	min-height: 30em;
+	margin-left: 10%;
+	margin-right: 10%;
+	border: 1px solid #555;
 }
 
 #login button{
@@ -28,4 +59,62 @@
 
 #login input {
 	margin: 0.2em;
+}
+
+#filebrowser {
+	padding: 1em;
+	margin-left: auto;
+	margin-right: auto;
+	
+	max-width: 30em;
+	background-color: #eee;
+	border: 2px solid #444;
+	border-radius: 25px;
+}
+
+#filebrowser li {
+	display:block;
+	background-color: #fff;
+}
+
+#filebrowser h2 {
+	font-family: helvetica;
+	font-size: 18px;
+}
+
+#dropzone {
+	display: block;
+	background-color: #FFF;
+	width: 100%;
+	height: 5em;
+}
+
+#filebrowser ul {
+	display:block;
+	padding: 0em;
+	list-style: none;
+	list-style-position: none;
+}
+
+#filebrowser ul li:nth-child(even){
+	background-color: lightblue;
+}
+
+#addFileSection {
+	/* not yet implemented */
+	display: none;
+}
+
+#loggedInBar {
+	display: block;
+	height: 3em;
+	width: 100%;
+}
+
+#loggedInBar a {
+	float:right;
+}
+
+#loggedInBar p {
+	float:left;
 }

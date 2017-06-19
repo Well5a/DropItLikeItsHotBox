@@ -16,7 +16,7 @@ import model.User;
 public class FileDao {
 	private static EntityManager em;
 	private static FileDao singleton;
-	private static final String rootPath = "./files/";
+	private static final String rootPath = "C:\\Users\\David\\workspaceEE\\Dropbox\\DropItLikeItsHotBox\\Dropbox\\files\\";
 	
 	private FileDao() {
 		em = DaoManager.getInstance().getEntityManager();
@@ -118,6 +118,18 @@ public class FileDao {
 		else return null;
 	}
 	
+	public void removeFileFromFilesystem(File f)
+	{
+		if (em.contains(f))
+		{
+			java.io.File toDelete = new java.io.File(rootPath + f.getPath());
+			if(toDelete.exists())
+			{
+				toDelete.delete();
+			}
+		}
+	}
+	
 	public File getFileByPath(String path)
 	{
 		Query q = em.createQuery("SELECT f FROM File f WHERE f.path LIKE :path");
@@ -147,11 +159,26 @@ public class FileDao {
 		return false;
 	}
 	
+	String getHomeDir(String user)
+	{
+		return rootPath + user;
+	}
 	
 	public void deleteFile(Integer id) {
 		
 		File f = em.find(File.class, id);
 		if (f != null) {
+			removeFileFromFilesystem(f);
+			em.getTransaction().begin();
+			em.remove(f);
+			em.getTransaction().commit();
+		}
+	}
+	
+	public void deleteFile(File f) {
+		
+		if (f != null) {
+			removeFileFromFilesystem(f);
 			em.getTransaction().begin();
 			em.remove(f);
 			em.getTransaction().commit();
@@ -160,8 +187,14 @@ public class FileDao {
 	
 	public int getMaxId()
 	{
-		Query q = em.createNativeQuery("SELECT * FROM dropbox.file ORDER BY oId DESC LIMIT 1");
-		return (int)q.getResultList().get(0);
+		Query q = em.createNativeQuery("SELECT oId FROM dropbox.file ORDER BY oId DESC LIMIT 1");
+		
+		if (!q.getResultList().isEmpty())
+		{
+			int ret = (int)q.getResultList().get(0);
+			return ret;
+		}
+		return 0;
 	}
 	
 	private java.io.File createIoFile(String path)
@@ -193,7 +226,7 @@ public class FileDao {
 			{
 				throw new IllegalStateException("Couldn't create dir: " + f);
 			}
-			else if(f.isFile() && !f.createNewFile())
+			else if(!f.createNewFile())
 			{
 				throw new IllegalStateException("Couldn't create file: " + f);
 			}
@@ -203,6 +236,11 @@ public class FileDao {
 			return false;
 		}
 		return true;
+	}
+
+	public String getFileRoot()
+	{
+		return rootPath;
 	}
 	
 	private boolean addFileToFilesystem(java.io.File f, byte [] bytes)

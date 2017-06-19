@@ -26,6 +26,15 @@ public class AuthenticationResource
 	@Context
 	HttpServletRequest request;
 	
+	@GET
+	public Response getAuthentication()
+	{
+		if (request.getSession().getAttribute("user") != null)
+			return Response.ok().entity(request.getSession().getAttribute("user")).build();
+		else 
+			return Response.status(401).build();
+	}
+	
 	@Path("/login")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -41,7 +50,7 @@ public class AuthenticationResource
 		if(UserDao.getInstance().authenticate(username, password))
 		{
 			session.setAttribute("user", username);
-			return Response.ok().build();
+			return Response.ok().entity(data).build();
 		}
 		else
 			return Response.status(401).build();
