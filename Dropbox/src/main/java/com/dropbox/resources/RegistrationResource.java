@@ -24,8 +24,7 @@ public class RegistrationResource
 	@Context
 	Request request;
 	UserDao dao = UserDao.getInstance();
-	
-	
+		
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response register(User user)
@@ -33,25 +32,30 @@ public class RegistrationResource
 		String username = user.getUsername();	//json.get("username").getAsString();
 		String email = user.getEmail();			//json.get("email").getAsString();
 		String password = user.getPasswd();		//json.get("password").getAsString();
+		
+		JsonObject clientMessage = new JsonObject();
+		
 		//checkt, ob nutzername schon vergeben ist
 		if (dao.getUserByUsername(username) != null)
 		{
-			return Response.serverError().build();
+			clientMessage.addProperty("message", "username already in use");
+			return Response.status(401).entity(clientMessage.toString()).build();
 		}
 		//checkt, ob nutzername schon vergeben ist
 		if (dao.getUserByEmail(email) != null)
 		{
-			return Response.serverError().build();
+			clientMessage.addProperty("message", "email already registered");
+			return Response.status(401).entity(clientMessage.toString()).build();
 		}
+		clientMessage.addProperty("username", username);
 		//Erstellt user neu, da oid gesetzt und password gehasht werden muss
 		User u = new User();
 		u.setEmail(email);
 		u.setUsername(username);
 		u.setOId(dao.getMaxId() + 1);
-		u.setPasswd(password);
+		u.setAndHashPasswd(password);
 		dao.insertUser(u);
-		FileDao.getInstance().createDirectory("./" + username, u);
-		return Response.ok().build();
+		FileDao.getInstance().createDirectory(username, u);
+		return Response.ok().entity(clientMessage.toString()).build();
 	}
-	
 }

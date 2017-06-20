@@ -59,11 +59,14 @@ public class User implements Serializable {
 		return this.passwd;
 	}
 
-	public void setPasswd(String passwd) {
+	public void setAndHashPasswd(String passwd) {
 		String hashed = PasswordHasher.hashPassword(passwd);
 		this.passwd = hashed;
 	}
-
+	
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
+	}
 	public String getUsername() {
 		return this.username;
 	}

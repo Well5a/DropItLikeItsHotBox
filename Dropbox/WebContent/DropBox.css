@@ -1,8 +1,10 @@
 /* File Dropbox.css: stylesheet for the DropBox web-application*/
 
 body {
-	font-family: helvetica;
-  margin: 0px;
+ 	font-family: helvetica;
+  	margin: 0px;
+  	/* Comment in for some dank*/
+  	/*background-image: url("public/dank.jpg");*/
 }
 
 #header{
@@ -10,7 +12,7 @@ body {
 	float: left;
 	width: 100%;
 	margin-top: 0;
-	background-color: blue;
+	background-color: green;
 }
 
 #header h1 {
@@ -30,7 +32,7 @@ body {
 	max-width: 14em;
 	position: relative;
 	float: center;
-  padding: 1em;
+    padding: 1em;
 	border: 2px solid #555;
 	border-radius: 25px;
 }
@@ -40,8 +42,8 @@ body {
 	position: relative;
 	padding: 1em;
 	margin-top: 6.3em;
-  display: block;
-	background-color: #DDD;
+  	display: block;
+	background-color: lightgreen;
 	max-width: 60em;
 	min-width: 40em;
 	min-height: 30em;

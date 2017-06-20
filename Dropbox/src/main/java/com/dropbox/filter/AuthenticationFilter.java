@@ -12,11 +12,13 @@ import javax.servlet.http.*;
 
 public class AuthenticationFilter implements Filter
 {
+	//Defines, which resources can be accessed without authentication
 	public final String [] whitelist = {
 			"/DropBox/login.html",
 			"/DropBox/rest/authenticate/login",
 			"/DropBox/rest/authenticate/logout",
-			"/DropBox/rest/authenticate"
+			"/DropBox/rest/authenticate",
+			"/DropBox/rest/register"
 	};
 	
 	private FilterConfig filterConfig;

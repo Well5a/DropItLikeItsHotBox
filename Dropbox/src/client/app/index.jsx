@@ -1,6 +1,8 @@
 import React from 'react';
 import Login from './login.jsx'
 import Browser from './browser.jsx'
+import Registration from './registration.jsx'
+
 import axios from 'axios'
 
 import {render} from 'react-dom';
@@ -18,11 +20,15 @@ class App extends React.Component
         this.state = {
             loggedin: false,
             browsing: false,
-            username: ""
+            username: "",
+            registering: false
         }
+        //Bind callback functions
         this.loginCallback = this.loginCallback.bind(this);
         this.logoutHandler = this.logoutHandler.bind(this);
         this.authenticationCallback = this.authenticationCallback.bind(this);
+        this.registerCallback = this.registerCallback.bind(this);
+        this.registerButtonHandler = this.registerButtonHandler.bind(this);
         this.checkAuthentication();
     }
     
@@ -89,7 +95,11 @@ class App extends React.Component
      */
     renderMain()
     {
-        if(!this.state.loggedin)
+        if (this.state.registering)
+        {
+            return this.renderRegistration();
+        }
+        else if(!this.state.loggedin)
         {
             return this.renderLogIn();
         }
@@ -152,10 +162,33 @@ class App extends React.Component
                 <Login
                 callback={this.loginCallback}
                 />
+                <p>no account? <button onClick={this.registerButtonHandler}>register here</button></p>
             </div>
         );
     }
     
+    renderRegistration()
+    {
+        return (
+                <div id="registration">
+                    <Registration
+                    callback={this.registerCallback}
+                    />
+                </div>
+        );
+    }
+    
+    registerButtonHandler()
+    {
+        this.setState({registering: true});
+    }
+    
+    registerCallback(username)
+    {
+        this.setState({username: username});
+        this.setState({registering: false});
+        this.setState({browsing: true});
+    }
 };
 
 render(<App/>, document.getElementById("App"));

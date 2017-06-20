@@ -12,19 +12,21 @@ import model.User;
 
 public class UserDaoTest {
 	
-	private static User u = null;
+	private UserDao dao;
+	private User u; 
 	
+	/*
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		u = new User();
-		u.setEmail("test@whatever.com");
-		u.setOId(666);
-		u.setPasswd("blblabaldasisteinhash");
-		u.setUsername("testUser");
-		
-		UserDao.getInstance().insertUser(u);
+	public void setUpBeforeClass() throws Exception {
+		dao = UserDao.getInstance();
+	}*/
+	
+	@Test
+	public void authenticateTest()
+	{
+		assertTrue(UserDao.getInstance().authenticate("RandyRanderson", "guest"));
 	}
-
+/*
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		UserDao dao = UserDao.getInstance();
@@ -60,5 +62,5 @@ public class UserDaoTest {
 		dao.deleteUser(u.getOId());
 		User newOldUser = dao.getUser(u.getOId());
 		assertNull(newOldUser);
-	}
+	}*/
 }

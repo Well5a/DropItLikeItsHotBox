@@ -15,10 +15,13 @@ class Browser extends React.Component
         this.getDirectory = this.getDirectory.bind(this);
         this.toggleShowFileAddMenu = this.toggleShowFileAddMenu.bind(this);
         this.state = {currentDirectory : {path: props.home},
-                showAddFile: false
+                showAddFile: false,
+                link: "#"
         };
         this.getDirectory(props.home);
     }
+    
+    
     
     render()
     {
@@ -50,7 +53,7 @@ class Browser extends React.Component
     
     /**
      * Render addFile div
-     */
+     */ 
     renderAddFile()
     {
         return(
@@ -81,7 +84,7 @@ class Browser extends React.Component
     renderListElement(subdirectory)
     {
         return(
-                <li><a href="#" onClick={() => this.getDirectory(subdirectory)}>{subdirectory}</a></li>
+                <li><a href={this.state.link} onClick={() => this.getDirectory(subdirectory)}>{subdirectory}</a></li>
         );
     }
     
@@ -100,7 +103,8 @@ class Browser extends React.Component
                     //its a file
                     if(response.data.subdirectories == undefined)
                     {
-                        //this.downloadFile("/DropBox/rest/box/browse/" + directorypath);
+                        //this.setState({link: "/DropBox/rest/box/browse/" + directorypath}); 
+                        window.open("/DropBox/rest/box/browse/" + directorypath);
                     }
                     //its a directory
                     else
