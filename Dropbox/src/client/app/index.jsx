@@ -77,7 +77,6 @@ class App extends React.Component
         //alert(response.data.username + " " + response.data.password);
         if (response.status > 199 && response.status < 300)
         {
-            console.log("setting current dir...");
             this.setState({username: response.data.username});
             this.setState({browsing: true});
             this.setState({loggedin: true});

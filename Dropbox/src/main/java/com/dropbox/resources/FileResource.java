@@ -169,7 +169,8 @@ public class FileResource
 		{
 			result = new JsonObject();
 			result.addProperty("path", toResourcePath(dir.getPath()));
-			
+			if (getParentsPath(dir) != null)
+				result.addProperty("parent", toResourcePath(getParentsPath(dir)));
 			if (dir.listFiles().length != 0)
 			{
 				result.add("subdirectories", new JsonArray());
@@ -180,6 +181,22 @@ public class FileResource
 			}
 		}
 		return result.toString();
+	}
+	
+	private String getParentsPath(java.io.File child)
+	{
+		File parentFileDescriptor = FileDao.getInstance().getFileByPath(toResourcePath(child.getParent()));
+		if (parentFileDescriptor != null 
+				&& parentFileDescriptor
+				.getUser()
+				.getUsername()
+				.equals( request.getSession(false)
+						.getAttribute("user")) )
+		{
+			return toResourcePath(child.getParent());
+		}
+		else 
+			return null;
 	}
 	
 	private String toResourcePath(String path)

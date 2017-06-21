@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Dropzone from 'react-dropzone'
 
 /**
  * React Component for browsing directories
@@ -16,9 +17,14 @@ class Browser extends React.Component
         this.toggleShowFileAddMenu = this.toggleShowFileAddMenu.bind(this);
         this.state = {currentDirectory : {path: props.home},
                 showAddFile: false,
-                link: "#"
+                link: "#",
+                message: ""
         };
         this.getDirectory(props.home);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.toggleShowFileAddMenu = this.toggleShowFileAddMenu.bind(this);
+        //this.addFileHandler = this.addFileHandler.bind(this);
+        this.addDirectoryHandler = this.addDirectoryHandler.bind(this);
     }
     
     
@@ -39,18 +45,30 @@ class Browser extends React.Component
                 <div id="filebrowser">
                     <h2>{this.state.currentDirectory.path + "\\"}</h2>
                     <ul class="directory">
+                        <li onClick={() => this.getDirectory(this.state.currentDirectory.parent)}><p>..</p></li>
                         {list}
                     </ul>
                     <div id="addFileSection">
                         {this.renderAddFile()}
                     </div>
-                    <div id="dropzone">
-                        drop it like it's hot
-                    </div>    
+                    <p id="browserStatus">{this.state.message}</p>
                 </div>
         );
     }
     
+    handleDrop(files) {
+        files.forEach(
+            (file)=>{
+                var reader = new FileReader();
+                var path = '/DropBox/rest/box/insertFile/' + this.state.currentDirectory.path + '/' + file.name;
+                reader.onload = function(theFileData) {
+                    var data = theFileData.target.result; // Ergebnis vom FileReader auslesen
+                    axios.post(path, data);
+                }
+                reader.readAsArrayBuffer(file);
+            }); 
+    }
+
     /**
      * Render addFile div
      */ 
@@ -58,8 +76,7 @@ class Browser extends React.Component
     {
         return(
                 <div>
-                    <button id="addFileButton" onclick={this.toggleShowFileAddMenu}>+</button>
-                    
+                    {this.renderAddFileMenu()}
                 </div>
         );
     }
@@ -69,10 +86,83 @@ class Browser extends React.Component
      */
     toggleShowFileAddMenu()
     {
-        if (this.state.showAddFile)
+        if (this.state.showAddFile === true)
             this.setState({showAddFile: false});
         else
             this.setState({showAddFile: true});
+    }
+    
+    renderAddFileMenu()
+    {
+        //Style via css
+        var style = {}
+            return(
+                    <div id="addFileMenu">
+                        <div id="addDirectoryDiv">
+                            <p>add Directory:</p>
+                            <input id="addDirectoryInput" type="text"></input>
+                            <button onClick={this.addDirectoryHandler}>+</button>
+                        </div>
+                        <Dropzone 
+                            id="dropzone"
+                            onDrop={this.handleDrop}
+                            style={style}
+                        >Drop your files here
+                        </Dropzone>
+                    </div>
+            );
+    }
+    
+    dragEnter()
+    {
+        alert("drag entered!");
+    }
+    
+    addFileHandler(evt)
+    {
+        var files = evt.dataTransfer.files;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var arrayBuffer = this.result,
+            array = new Uint8Array(arrayBuffer),
+            binaryString = String.fromCharCode.apply(null, array);
+
+            console.log(binaryString);
+        }
+        
+        
+        for (var i = 0; i < files.length; i++)
+        {
+            var resPath = "/DropBox/rest/box/insertFile/" 
+                + this.state.currentDirectory.path
+                + files[0].name;
+            axios.post(resPath, reader.readAsArrayBuffer(files[i]))
+                .then(
+                        (response) => {
+                            if (response.status < 300)
+                            {
+                                this.setState({showAddFile: false});
+                                getDirectory(this.state.currentDirectory.path);
+                            }
+                            else
+                            {
+                                this.setState({message: "Could not upload file: " + file.name + "!"});
+                            }
+                        }
+                );
+                
+        }
+        this.getDirectory(this.state.currentDirectory.path);
+    }
+    
+    addDirectoryHandler()
+    {
+        var resPath = "/DropBox/rest/box/insertDir/" 
+            + this.state.currentDirectory.path + "/"
+            + document.getElementById("addDirectoryInput").value;
+        axios.post(resPath, "").then( () => {
+            this.getDirectory(this.state.currentDirectory.path);
+        });
     }
     
     /**
@@ -84,9 +174,10 @@ class Browser extends React.Component
     renderListElement(subdirectory)
     {
         return(
-                <li><a href={this.state.link} onClick={() => this.getDirectory(subdirectory)}>{subdirectory}</a></li>
+                <li onClick={() => this.getDirectory(subdirectory)}><p>{subdirectory}</p></li>
         );
     }
+    
     
     /**
      * fetches subdirectories of directory
@@ -101,7 +192,7 @@ class Browser extends React.Component
                 function(response)
                 {
                     //its a file
-                    if(response.data.subdirectories == undefined)
+                    if(response.data.path == undefined)
                     {
                         //this.setState({link: "/DropBox/rest/box/browse/" + directorypath}); 
                         window.open("/DropBox/rest/box/browse/" + directorypath);

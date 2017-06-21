@@ -52,7 +52,6 @@ public class RegistrationResource
 		User u = new User();
 		u.setEmail(email);
 		u.setUsername(username);
-		u.setOId(dao.getMaxId() + 1);
 		u.setAndHashPasswd(password);
 		dao.insertUser(u);
 		FileDao.getInstance().createDirectory(username, u);

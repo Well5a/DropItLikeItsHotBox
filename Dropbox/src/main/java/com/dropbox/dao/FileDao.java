@@ -55,7 +55,6 @@ public class FileDao {
 	
 	public void persistFileDescriptor(File f)
 	{
-		f.setOId(getMaxId() + 1);
 		em.getTransaction().begin();
 		em.persist(f);
 		em.getTransaction().commit();
@@ -185,16 +184,10 @@ public class FileDao {
 		}
 	}
 	
-	public int getMaxId()
+	public Integer getMaxId()
 	{
-		Query q = em.createNativeQuery("SELECT oId FROM dropbox.file ORDER BY oId DESC LIMIT 1");
-		
-		if (!q.getResultList().isEmpty())
-		{
-			int ret = (int)q.getResultList().get(0);
-			return ret;
-		}
-		return 0;
+		Query q = em.createNativeQuery("SELECT * FROM dropbox.file ORDER BY oId DESC");
+		return ((File)(q.getResultList().get(0))).getOId();
 	}
 	
 	private java.io.File createIoFile(String path)
