@@ -10,10 +10,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema dropbox
 -- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema dropbox
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `dropbox` DEFAULT CHARACTER SET utf8 ;
 USE `dropbox` ;
 
@@ -74,6 +70,17 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `dropbox`.`sequence`
+-- -----------------------------------------------------
+CREATE TABLE `sequence` (
+  `seq_name` varchar(20) DEFAULT NULL,
+  `seq_count` int(11) DEFAULT NULL
+) 
+ENGINE=InnoDB 
+DEFAULT CHARACTER SET=utf8;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
@@ -94,3 +101,7 @@ VALUES (1, 'C:\Users\User1\Documents\file.txt', 3);
 
 INSERT INTO dropbox.filepermission (oId, allowRead, allowWrite, fileId, userId)
 VALUES(1, 1, 1, 1, 3);
+
+INSERT INTO dropbox.sequence (seq_name, seq_count)
+VALUES 	('TUSER', 1000),
+		('TFILE', 1000)
