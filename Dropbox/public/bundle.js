@@ -6773,7 +6773,7 @@
 	
 	        _this.getDirectory = _this.getDirectory.bind(_this);
 	        _this.toggleShowFileAddMenu = _this.toggleShowFileAddMenu.bind(_this);
-	        _this.state = { currentDirectory: { path: props.home },
+	        _this.state = { currentDirectory: undefined,
 	            showAddFile: false,
 	            link: "#",
 	            message: ""
@@ -6789,8 +6789,7 @@
 	    _createClass(Browser, [{
 	        key: 'render',
 	        value: function render() {
-	            var _this2 = this;
-	
+	            if (this.state.currentDirectory == undefined) return null;
 	            var list = [];
 	            if (this.state.currentDirectory.subdirectories != undefined) {
 	                var i;
@@ -6799,28 +6798,20 @@
 	                }
 	            }
 	
+	            var current = this.state.currentDirectory;
 	            return _react2.default.createElement(
 	                'div',
 	                { id: 'filebrowser' },
 	                _react2.default.createElement(
 	                    'h2',
 	                    null,
-	                    this.state.currentDirectory.path + "\\"
+	                    current.self.name
 	                ),
 	                _react2.default.createElement(
-	                    'ul',
+	                    'table',
 	                    { 'class': 'directory' },
-	                    _react2.default.createElement(
-	                        'li',
-	                        { onClick: function onClick() {
-	                                return _this2.getDirectory(_this2.state.currentDirectory.parent);
-	                            } },
-	                        _react2.default.createElement(
-	                            'p',
-	                            null,
-	                            '..'
-	                        )
-	                    ),
+	                    this.renderTableHead(),
+	                    this.renderParentDir(),
 	                    list
 	                ),
 	                _react2.default.createElement(
@@ -6836,21 +6827,74 @@
 	            );
 	        }
 	    }, {
+	        key: 'renderTableHead',
+	        value: function renderTableHead() {
+	            return _react2.default.createElement(
+	                'tr',
+	                null,
+	                _react2.default.createElement('td', null),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    'name'
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    'lastChanged'
+	                ),
+	                _react2.default.createElement('td', null)
+	            );
+	        }
+	    }, {
+	        key: 'renderParentDir',
+	        value: function renderParentDir() {
+	            var current = this.state.currentDirectory;
+	            if (current.parent == undefined || current.parent == null) return;
+	
+	            var parentLastChanged = new Date(current.parent.lastChanged).toTimeString();
+	            return _react2.default.createElement(
+	                'tr',
+	                { onClick: function (e) {
+	                        e.preventDefault();
+	                        this.getDirectory(current.parent.path);
+	                    }.bind(this) },
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    '..'
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    parentLastChanged
+	                )
+	            );
+	        }
+	
+	        /**
+	         * Handler to be called when the user drops 
+	         * files into the dropzone
+	         * 
+	         * @param {any} files
+	         */
+	
+	    }, {
 	        key: 'handleDrop',
 	        value: function handleDrop(files) {
-	            var _this3 = this;
+	            var _this2 = this;
 	
 	            files.forEach(function (file) {
 	                var reader = new FileReader();
-	                var path = '/DropBox/rest/box/insertFile/' + _this3.state.currentDirectory.path + '/' + file.name;
+	                var path = '/DropBox/rest/box/insertFile/' + _this2.state.currentDirectory.self.path + '/' + file.name;
 	                reader.onload = function (theFileData) {
-	                    var _this4 = this;
+	                    var _this3 = this;
 	
 	                    var data = theFileData.target.result; // Ergebnis vom FileReader auslesen
 	                    _axios2.default.post(path, data).then(function () {
-	                        _this4.getDirectory(_this4.state.currentDirectory.path);
+	                        _this3.getDirectory(_this3.state.currentDirectory.self.path);
 	                    });
-	                }.bind(_this3);
+	                }.bind(_this2);
 	                reader.readAsArrayBuffer(file);
 	            });
 	        }
@@ -6880,7 +6924,7 @@
 	        }
 	
 	        /**
-	         * renders lower part og the filebrowser,
+	         * renders lower part of the filebrowser,
 	         * which is used as dropzone and to add
 	         * directories
 	         */
@@ -6928,11 +6972,11 @@
 	    }, {
 	        key: 'addDirectoryHandler',
 	        value: function addDirectoryHandler() {
-	            var _this5 = this;
+	            var _this4 = this;
 	
-	            var resPath = "/DropBox/rest/box/insertDir/" + this.state.currentDirectory.path + "/" + document.getElementById("addDirectoryInput").value;
+	            var resPath = "/DropBox/rest/box/insertDir/" + this.state.currentDirectory.self.path + "/" + document.getElementById("addDirectoryInput").value;
 	            _axios2.default.post(resPath, "").then(function () {
-	                _this5.getDirectory(_this5.state.currentDirectory.path);
+	                _this4.getDirectory(_this4.state.currentDirectory.self.path);
 	            });
 	        }
 	
@@ -6946,24 +6990,48 @@
 	    }, {
 	        key: 'renderListElement',
 	        value: function renderListElement(subdirectory) {
-	            var _this6 = this;
-	
+	            var datestr = new Date(subdirectory.lastChanged).toTimeString();
 	            return _react2.default.createElement(
-	                'li',
-	                null,
+	                'tr',
+	                { onClick: function (e) {
+	                        e.preventDefault();this.getDirectory(subdirectory.path);
+	                    }.bind(this) },
 	                _react2.default.createElement(
-	                    'p',
-	                    { onClick: function onClick() {
-	                            return _this6.getDirectory(subdirectory);
-	                        } },
-	                    subdirectory
+	                    'td',
+	                    null,
+	                    this.getImage(subdirectory.type)
 	                ),
 	                _react2.default.createElement(
-	                    'button',
-	                    { onClick: this.getDeleteHandler(subdirectory) },
-	                    'delete'
+	                    'td',
+	                    null,
+	                    subdirectory.name
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    datestr
+	                ),
+	                _react2.default.createElement(
+	                    'td',
+	                    null,
+	                    _react2.default.createElement(
+	                        'button',
+	                        { onClick: this.getDeleteHandler(subdirectory) },
+	                        'delete'
+	                    )
 	                )
 	            );
+	        }
+	
+	        /**
+	         * returns the corrensponding icon
+	         * @param {any} type ( "directory" | "file" )
+	         */
+	
+	    }, {
+	        key: 'getImage',
+	        value: function getImage(type) {
+	            return _react2.default.createElement('img', { alt: type + "-icon", src: "public/icon/" + type + ".svg" });
 	        }
 	
 	        /**
@@ -6979,7 +7047,7 @@
 	            //e.preventDefault();
 	            _axios2.default.get("/DropBox/rest/box/browse/" + directorypath).then(function (response) {
 	                //its a file
-	                if (response.data.path == undefined) {
+	                if (response.data.self.type == "file") {
 	                    //this.setState({link: "/DropBox/rest/box/browse/" + directorypath}); 
 	                    window.open("/DropBox/rest/box/browse/" + directorypath);
 	                }
@@ -7002,7 +7070,7 @@
 	            return function (e) {
 	                e.preventDefault();
 	                _axios2.default.delete("/DropBox/rest/box/remove/" + path).then(function (response) {
-	                    this.getDirectory(this.state.currentDirectory.path);
+	                    this.getDirectory(this.state.currentDirectory.self.path);
 	                }.bind(this));
 	            }.bind(this);
 	        }

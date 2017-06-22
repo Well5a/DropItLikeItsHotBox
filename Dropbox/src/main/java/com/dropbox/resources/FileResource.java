@@ -1,39 +1,25 @@
 package com.dropbox.resources;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.xml.bind.JAXBElement;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.dropbox.dao.FileDao;
 import com.dropbox.dao.UserDao;
-import model.User;
-import model.File;
-
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import model.File;
+import model.User;
 
 //http://localhost:8080/Dropbox/file/Julian/home/test
 @Path("/box")
@@ -92,6 +78,12 @@ public class FileResource
 		return response.build();
 	}
 	
+	/**
+	 * Resource handler for removing files in the dropbox
+	 * 
+	 * @param p path of the file to be removed
+	 * @return Resonse with status 200 on success else 400
+	 */
 	@DELETE
 	@Path("/remove/{path : .+}")
 	public Response removeFile(@PathParam("path") String p)
@@ -168,21 +160,41 @@ public class FileResource
 		if (dir.isDirectory())
 		{
 			result = new JsonObject();
-			result.addProperty("path", toResourcePath(dir.getPath()));
+			result.add("self", toJsonFileEntry(dir));
 			if (getParentsPath(dir) != null)
-				result.addProperty("parent", toResourcePath(getParentsPath(dir)));
+				result.add("parent", toJsonFileEntry(dir.getParentFile()));
 			if (dir.listFiles().length != 0)
 			{
 				result.add("subdirectories", new JsonArray());
 				for (java.io.File f : dir.listFiles())
 				{
-					result.getAsJsonArray("subdirectories").add(toResourcePath(f.getPath()));	
+					result.getAsJsonArray("subdirectories").add(toJsonFileEntry(f));	
 				}
 			}
 		}
 		return result.toString();
 	}
 	
+	
+	private JsonObject toJsonFileEntry(java.io.File f)
+	{
+		if (!f.exists()) 
+			return null;
+		JsonObject ret = new JsonObject();
+		ret.addProperty("type", f.isDirectory() ? "directory" : "file");
+		ret.addProperty("name", f.getName());
+		ret.addProperty("path", toResourcePath(f.getAbsolutePath()));
+		ret.addProperty("lastChanged", f.lastModified());
+		return ret;
+	}
+	
+	/**
+	 * Returns the path of the File parent as
+	 * resource path
+	 * 
+	 * @param child
+	 * @return path to the Files parent
+	 */
 	private String getParentsPath(java.io.File child)
 	{
 		File parentFileDescriptor = FileDao.getInstance().getFileByPath(toResourcePath(child.getParent()));
@@ -199,6 +211,13 @@ public class FileResource
 			return null;
 	}
 	
+	/**
+	 * Converts an absoluten path to a relaitve path
+	 * which can be used by the client to query the File.
+	 * 
+	 * @param path absolute path to be converted
+	 * @return relative path to resource
+	 */
 	private String toResourcePath(String path)
 	{
 		return new String(path).replace(dao.getFileRoot(), "");

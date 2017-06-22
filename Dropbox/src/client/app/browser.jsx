@@ -15,7 +15,7 @@ class Browser extends React.Component
         super(props);
         this.getDirectory = this.getDirectory.bind(this);
         this.toggleShowFileAddMenu = this.toggleShowFileAddMenu.bind(this);
-        this.state = {currentDirectory : {path: props.home},
+        this.state = {currentDirectory : undefined,
                 showAddFile: false,
                 link: "#",
                 message: ""
@@ -31,6 +31,8 @@ class Browser extends React.Component
     
     render()
     {
+        if (this.state.currentDirectory == undefined)
+            return null;
         var list = [];
         if (this.state.currentDirectory.subdirectories != undefined)
         {
@@ -41,13 +43,15 @@ class Browser extends React.Component
             }   
         }
         
+        var current = this.state.currentDirectory;
         return (
                 <div id="filebrowser">
-                    <h2>{this.state.currentDirectory.path + "\\"}</h2>
-                    <ul class="directory">
-                        <li onClick={() => this.getDirectory(this.state.currentDirectory.parent)}><p>..</p></li>
+                    <h2>{current.self.name}</h2>
+                    <table class="directory">
+                        {this.renderTableHead()}
+                        {this.renderParentDir()}
                         {list}
-                    </ul>
+                    </table>
                     <div id="addFileSection">
                         {this.renderAddFile()}
                     </div>
@@ -56,16 +60,52 @@ class Browser extends React.Component
         );
     }
     
+    renderTableHead()
+    {
+        return(
+                <tr>
+                            <td></td>
+                            <td>name</td>
+                            <td>lastChanged</td>
+                            <td></td>
+                </tr>
+              );
+    }
+    
+    renderParentDir() {
+        var current = this.state.currentDirectory;
+        if (current.parent == undefined || current.parent == null)
+            return;
+        
+        var parentLastChanged = new Date(current.parent.lastChanged).toTimeString();
+        return(
+                <tr onClick={   function(e){
+                                    e.preventDefault();
+                                    this.getDirectory(current.parent.path);
+                                }.bind(this)
+                            }>
+                            <td>..</td>
+                            <td>{parentLastChanged}</td>
+                </tr>
+              );
+    }
+    
+    /**
+     * Handler to be called when the user drops 
+     * files into the dropzone
+     * 
+     * @param {any} files
+     */
     handleDrop(files) {
         files.forEach(
             (file)=>{
                 var reader = new FileReader();
-                var path = '/DropBox/rest/box/insertFile/' + this.state.currentDirectory.path + '/' + file.name;
+                var path = '/DropBox/rest/box/insertFile/' + this.state.currentDirectory.self.path + '/' + file.name;
                 reader.onload = function(theFileData) {
                     var data = theFileData.target.result; // Ergebnis vom FileReader auslesen
                     axios.post(path, data)
                             .then( ()=> {
-                                this.getDirectory(this.state.currentDirectory.path);
+                                this.getDirectory(this.state.currentDirectory.self.path);
                             });
                     
                 }.bind(this)
@@ -97,7 +137,7 @@ class Browser extends React.Component
     }
     
     /**
-     * renders lower part og the filebrowser,
+     * renders lower part of the filebrowser,
      * which is used as dropzone and to add
      * directories
      */
@@ -130,10 +170,10 @@ class Browser extends React.Component
     addDirectoryHandler()
     {
         var resPath = "/DropBox/rest/box/insertDir/" 
-            + this.state.currentDirectory.path + "/"
+            + this.state.currentDirectory.self.path + "/"
             + document.getElementById("addDirectoryInput").value;
         axios.post(resPath, "").then( () => {
-            this.getDirectory(this.state.currentDirectory.path);
+            this.getDirectory(this.state.currentDirectory.self.path);
         });
     }
     
@@ -145,11 +185,27 @@ class Browser extends React.Component
      */
     renderListElement(subdirectory)
     {
+        var datestr = new Date(subdirectory.lastChanged).toTimeString();
         return(
-                <li><p onClick={() => this.getDirectory(subdirectory)}>{subdirectory}</p><button onClick={this.getDeleteHandler(subdirectory)}>delete</button></li>
+                <tr onClick={ function(e) { e.preventDefault(); this.getDirectory(subdirectory.path); }.bind(this) } >
+                    <td>{this.getImage(subdirectory.type)}</td>
+                    <td>{subdirectory.name}</td>
+                    <td>{datestr}</td>
+                    <td>
+                        <button onClick={this.getDeleteHandler(subdirectory)}>delete</button>
+                    </td>
+                </tr>
         );
     }
     
+    /**
+     * returns the corrensponding icon
+     * @param {any} type ( "directory" | "file" )
+     */
+    getImage(type)
+    {
+        return <img alt={type + "-icon"} src={"public/icon/" + type + ".svg"}/>
+    }
     
     /**
      * fetches subdirectories of directory
@@ -165,7 +221,7 @@ class Browser extends React.Component
                 function(response)
                 {
                     //its a file
-                    if(response.data.path == undefined)
+                    if(response.data.self.type == "file")
                     {
                         //this.setState({link: "/DropBox/rest/box/browse/" + directorypath}); 
                         window.open("/DropBox/rest/box/browse/" + directorypath);
@@ -193,7 +249,7 @@ class Browser extends React.Component
             .then(
                     function(response)
                     {
-                        this.getDirectory(this.state.currentDirectory.path);
+                        this.getDirectory(this.state.currentDirectory.self.path);
                     }.bind(this)
             );
         }.bind(this)
