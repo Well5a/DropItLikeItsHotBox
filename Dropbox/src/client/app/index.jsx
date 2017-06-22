@@ -184,9 +184,17 @@ class App extends React.Component
     
     registerCallback(username)
     {
-        this.setState({username: username});
-        this.setState({registering: false});
-        this.setState({browsing: true});
+        //login abgebrochen, der nutzer will zurück zum login
+        if (username === "")
+        {
+            this.setState({registering: false});
+        }
+        else
+        {
+            this.setState({username: username});
+            this.setState({registering: false});
+            this.setState({browsing: true});
+        }
     }
 };
 

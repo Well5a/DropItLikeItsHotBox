@@ -63,8 +63,12 @@ class Browser extends React.Component
                 var path = '/DropBox/rest/box/insertFile/' + this.state.currentDirectory.path + '/' + file.name;
                 reader.onload = function(theFileData) {
                     var data = theFileData.target.result; // Ergebnis vom FileReader auslesen
-                    axios.post(path, data);
-                }
+                    axios.post(path, data)
+                            .then( ()=> {
+                                this.getDirectory(this.state.currentDirectory.path);
+                            });
+                    
+                }.bind(this)
                 reader.readAsArrayBuffer(file);
             }); 
     }
@@ -92,6 +96,11 @@ class Browser extends React.Component
             this.setState({showAddFile: true});
     }
     
+    /**
+     * renders lower part og the filebrowser,
+     * which is used as dropzone and to add
+     * directories
+     */
     renderAddFileMenu()
     {
         //Style via css
@@ -113,48 +122,11 @@ class Browser extends React.Component
             );
     }
     
-    dragEnter()
-    {
-        alert("drag entered!");
-    }
     
-    addFileHandler(evt)
-    {
-        var files = evt.dataTransfer.files;
-        var reader = new FileReader();
-        reader.onload = function(){
-            var arrayBuffer = this.result,
-            array = new Uint8Array(arrayBuffer),
-            binaryString = String.fromCharCode.apply(null, array);
-
-            console.log(binaryString);
-        }
-        
-        
-        for (var i = 0; i < files.length; i++)
-        {
-            var resPath = "/DropBox/rest/box/insertFile/" 
-                + this.state.currentDirectory.path
-                + files[0].name;
-            axios.post(resPath, reader.readAsArrayBuffer(files[i]))
-                .then(
-                        (response) => {
-                            if (response.status < 300)
-                            {
-                                this.setState({showAddFile: false});
-                                getDirectory(this.state.currentDirectory.path);
-                            }
-                            else
-                            {
-                                this.setState({message: "Could not upload file: " + file.name + "!"});
-                            }
-                        }
-                );
-                
-        }
-        this.getDirectory(this.state.currentDirectory.path);
-    }
-    
+    /**
+     * Handler to be called when the user
+     * is adding a directory
+     */
     addDirectoryHandler()
     {
         var resPath = "/DropBox/rest/box/insertDir/" 
@@ -174,7 +146,7 @@ class Browser extends React.Component
     renderListElement(subdirectory)
     {
         return(
-                <li onClick={() => this.getDirectory(subdirectory)}><p>{subdirectory}</p></li>
+                <li><p onClick={() => this.getDirectory(subdirectory)}>{subdirectory}</p><button onClick={this.getDeleteHandler(subdirectory)}>delete</button></li>
         );
     }
     
@@ -187,6 +159,7 @@ class Browser extends React.Component
      */
     getDirectory(directorypath)
     {
+        //e.preventDefault();
         axios.get("/DropBox/rest/box/browse/" + directorypath)
         .then(
                 function(response)
@@ -204,6 +177,26 @@ class Browser extends React.Component
                     }
                 }.bind(this)
         );
+    }
+    
+    /**
+     * @param {any} path path to the file to be deleted
+     * 
+     * @return eventhandler for the delte action
+     */
+    getDeleteHandler(path)
+    {
+        return function(e)
+        {
+            e.preventDefault();
+            axios.delete("/DropBox/rest/box/remove/" + path)
+            .then(
+                    function(response)
+                    {
+                        this.getDirectory(this.state.currentDirectory.path);
+                    }.bind(this)
+            );
+        }.bind(this)
     }
 }
 export default Browser;
