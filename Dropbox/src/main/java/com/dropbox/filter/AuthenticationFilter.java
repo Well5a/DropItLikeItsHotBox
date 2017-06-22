@@ -12,13 +12,21 @@ import javax.servlet.http.*;
 
 public class AuthenticationFilter implements Filter
 {
-
-	public final String loginURI = "/login.html";
+	//Defines, which resources can be accessed without authentication
+	public final String [] whitelist = {
+			"/DropBox/login.html",
+			"/DropBox/rest/authenticate/login",
+			"/DropBox/rest/authenticate/logout",
+			"/DropBox/rest/authenticate",
+			"/DropBox/rest/register"
+	};
+	
+	private FilterConfig filterConfig;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// TODO Auto-generated method stub
-		
+		this.filterConfig = filterConfig;
 	}
 
 	@Override
@@ -30,15 +38,25 @@ public class AuthenticationFilter implements Filter
 		HttpSession session = request.getSession();
 		
 		boolean loggedIn = session != null && session.getAttribute("user") != null;
-        boolean loginRequest = request.getRequestURI().equals(loginURI);
+        boolean loginRequest = checkWhitelisted(request.getRequestURI());
 
         if (loggedIn || loginRequest) {
             chain.doFilter(request, response);
         } else {
-            response.sendRedirect(loginURI);
+            response.setStatus(401);
         }
 	}
 
+	private boolean checkWhitelisted(String requestUri)
+	{
+		for (String uri : whitelist)
+		{
+			if (uri.equals(requestUri))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub

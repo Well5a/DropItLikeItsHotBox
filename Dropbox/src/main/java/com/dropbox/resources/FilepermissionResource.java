@@ -1,6 +1,7 @@
 package com.dropbox.resources;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -20,6 +21,7 @@ public class FilepermissionResource {
 	@Context
 	Request request;
 	
+	@POST
 	@Path("/grant")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void grantPermission(JsonObject json)
@@ -89,6 +91,7 @@ public class FilepermissionResource {
 		}
 	}
 	
+	@POST
 	@Path("/revoke")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void revokePermission(JsonObject json)
