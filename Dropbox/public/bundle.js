@@ -7147,7 +7147,7 @@
 	            //e.preventDefault();
 	            _axios2.default.get("/DropBox/rest/box/browse/" + directorypath).then(function (response) {
 	                //its a file
-	                if (response.data.self.type == "file") {
+	                if (response.data.self === undefined) {
 	                    //this.setState({link: "/DropBox/rest/box/browse/" + directorypath}); 
 	                    window.open("/DropBox/rest/box/browse/" + directorypath);
 	                }
