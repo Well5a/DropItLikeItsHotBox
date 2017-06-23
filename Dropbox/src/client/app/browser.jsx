@@ -27,8 +27,9 @@ class Browser extends React.Component
         this.addDirectoryHandler = this.addDirectoryHandler.bind(this);
     }
     
-    
-    
+    /**
+     * renders the component
+     */
     render()
     {
         if (this.state.currentDirectory == undefined)
@@ -60,6 +61,10 @@ class Browser extends React.Component
         );
     }
     
+    /**
+     * renders the head of the filetable, containing
+     * the column names
+     */
     renderTableHead()
     {
         return(
@@ -72,6 +77,9 @@ class Browser extends React.Component
               );
     }
     
+    /**
+     * Renders the entry for the current directories parent
+     */
     renderParentDir() {
         var current = this.state.currentDirectory;
         if (current.parent == undefined || current.parent == null)
@@ -208,12 +216,28 @@ class Browser extends React.Component
         return <img alt={type + "-icon"} src={"public/icon/" + type + ".png"}/>
     }
     
+    /**
+     * Converts the value of a date object into a german-style
+     * String representation.
+     * 
+     * @param {any} date date to be converted
+     * @return String representation of date
+     */
     toDateString(date)
     {
         return this.zeroPadding(date.getDate(), 2) + '.' + this.zeroPadding(date.getMonth(), 2) + '.' 
         + date.getFullYear() + ' ' + this.zeroPadding(date.getHours(), 2) + ':' + this.zeroPadding(date.getMinutes(), 2);
     }
     
+    /**
+     * returns a string containing a number padded with zeros to
+     * the designated length.
+     * 
+     * @param {any} value value to be padded
+     * @param {any} length lenght to padd to
+     * 
+     * return zero padded string representation of value
+     */
     zeroPadding(value, length)
     {
         var valLen = value.toString().length;

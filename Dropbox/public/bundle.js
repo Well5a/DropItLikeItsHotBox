@@ -6786,6 +6786,11 @@
 	        return _this;
 	    }
 	
+	    /**
+	     * renders the component
+	     */
+	
+	
 	    _createClass(Browser, [{
 	        key: 'render',
 	        value: function render() {
@@ -6826,6 +6831,12 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * renders the head of the filetable, containing
+	         * the column names
+	         */
+	
 	    }, {
 	        key: 'renderTableHead',
 	        value: function renderTableHead() {
@@ -6846,6 +6857,11 @@
 	                _react2.default.createElement('td', null)
 	            );
 	        }
+	
+	        /**
+	         * Renders the entry for the current directories parent
+	         */
+	
 	    }, {
 	        key: 'renderParentDir',
 	        value: function renderParentDir() {
@@ -7034,11 +7050,31 @@
 	        value: function getImage(type) {
 	            return _react2.default.createElement('img', { alt: type + "-icon", src: "public/icon/" + type + ".png" });
 	        }
+	
+	        /**
+	         * Converts the value of a date object into a german-style
+	         * String representation.
+	         * 
+	         * @param {any} date date to be converted
+	         * @return String representation of date
+	         */
+	
 	    }, {
 	        key: 'toDateString',
 	        value: function toDateString(date) {
 	            return this.zeroPadding(date.getDate(), 2) + '.' + this.zeroPadding(date.getMonth(), 2) + '.' + date.getFullYear() + ' ' + this.zeroPadding(date.getHours(), 2) + ':' + this.zeroPadding(date.getMinutes(), 2);
 	        }
+	
+	        /**
+	         * returns a string containing a number padded with zeros to
+	         * the designated length.
+	         * 
+	         * @param {any} value value to be padded
+	         * @param {any} length lenght to padd to
+	         * 
+	         * return zero padded string representation of value
+	         */
+	
 	    }, {
 	        key: 'zeroPadding',
 	        value: function zeroPadding(value, length) {
