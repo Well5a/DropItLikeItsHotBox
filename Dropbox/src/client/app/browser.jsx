@@ -197,13 +197,14 @@ class Browser extends React.Component
     {
         var date = new Date(subdirectory.lastChanged);
         var datestr = this.toDateString(date);
+        var deleteHandler = this.getDeleteHandler(subdirectory);
         return(
-                <tr onClick={ function(e) { e.preventDefault(); this.getDirectory(subdirectory.path); }.bind(this) } >
+                <tr onClick={ function(e) { e.stopPropagation(); this.getDirectory(subdirectory.path); }.bind(this) } >
                     <td>{this.getImage(subdirectory.type)}</td>
                     <td>{subdirectory.name}</td>
                     <td>{datestr}</td>
                     <td>
-                        <button onClick={this.getDeleteHandler(subdirectory)}>delete</button>
+                        <button onClick={(e)=>{deleteHandler(e)}}>delete</button>
                     </td>
                 </tr>
         );
@@ -256,7 +257,6 @@ class Browser extends React.Component
      */
     getDirectory(directorypath)
     {
-        //e.preventDefault();
         axios.get("/DropBox/rest/box/browse/" + directorypath)
         .then(
                 function(response)
@@ -285,7 +285,7 @@ class Browser extends React.Component
     {
         return function(e)
         {
-            e.preventDefault();
+            e.stopPropagation();
             axios.delete("/DropBox/rest/box/remove/" + path)
             .then(
                     function(response)

@@ -7060,10 +7060,11 @@
 	        value: function renderListElement(subdirectory) {
 	            var date = new Date(subdirectory.lastChanged);
 	            var datestr = this.toDateString(date);
+	            var deleteHandler = this.getDeleteHandler(subdirectory);
 	            return _react2.default.createElement(
 	                'tr',
 	                { onClick: function (e) {
-	                        e.preventDefault();this.getDirectory(subdirectory.path);
+	                        e.stopPropagation();this.getDirectory(subdirectory.path);
 	                    }.bind(this) },
 	                _react2.default.createElement(
 	                    'td',
@@ -7085,7 +7086,9 @@
 	                    null,
 	                    _react2.default.createElement(
 	                        'button',
-	                        { onClick: this.getDeleteHandler(subdirectory) },
+	                        { onClick: function onClick(e) {
+	                                deleteHandler(e);
+	                            } },
 	                        'delete'
 	                    )
 	                )
@@ -7146,7 +7149,6 @@
 	    }, {
 	        key: 'getDirectory',
 	        value: function getDirectory(directorypath) {
-	            //e.preventDefault();
 	            _axios2.default.get("/DropBox/rest/box/browse/" + directorypath).then(function (response) {
 	                //its a file
 	                if (response.data.self === undefined) {
@@ -7170,7 +7172,7 @@
 	        key: 'getDeleteHandler',
 	        value: function getDeleteHandler(path) {
 	            return function (e) {
-	                e.preventDefault();
+	                e.stopPropagation();
 	                _axios2.default.delete("/DropBox/rest/box/remove/" + path).then(function (response) {
 	                    this.getDirectory(this.state.currentDirectory.self.path);
 	                }.bind(this));
