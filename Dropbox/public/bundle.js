@@ -6918,13 +6918,14 @@
 	            var current = this.state.currentDirectory;
 	            if (current.parent == undefined || current.parent == null) return;
 	
-	            var parentLastChanged = new Date(current.parent.lastChanged).toTimeString();
+	            var date = new Date(current.parent.lastChanged);
 	            return _react2.default.createElement(
 	                'tr',
 	                { onClick: function (e) {
 	                        e.preventDefault();
 	                        this.getDirectory(current.parent.path);
 	                    }.bind(this) },
+	                _react2.default.createElement('td', null),
 	                _react2.default.createElement(
 	                    'td',
 	                    null,
@@ -6933,8 +6934,9 @@
 	                _react2.default.createElement(
 	                    'td',
 	                    null,
-	                    parentLastChanged
-	                )
+	                    this.toDateString(date)
+	                ),
+	                _react2.default.createElement('td', null)
 	            );
 	        }
 	

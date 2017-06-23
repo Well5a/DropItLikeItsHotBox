@@ -85,15 +85,17 @@ class Browser extends React.Component
         if (current.parent == undefined || current.parent == null)
             return;
         
-        var parentLastChanged = new Date(current.parent.lastChanged).toTimeString();
+        var date = new Date(current.parent.lastChanged);
         return(
                 <tr onClick={   function(e){
                                     e.preventDefault();
                                     this.getDirectory(current.parent.path);
                                 }.bind(this)
                             }>
+                            <td></td>
                             <td>..</td>
-                            <td>{parentLastChanged}</td>
+                            <td>{this.toDateString(date)}</td>
+                            <td></td>
                 </tr>
               );
     }

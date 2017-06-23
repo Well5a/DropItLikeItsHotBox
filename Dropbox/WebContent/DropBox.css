@@ -49,7 +49,7 @@ body {
 	margin-right: auto;
 	max-width: 14em;
 	position: relative;
-	float: center;
+	margin: 0 auto;
     padding: 1em;
 	border: 2px solid #555;
 	border-radius: 25px;
@@ -133,7 +133,7 @@ body {
 }
 
 #filebrowser tr {
-	width-min: 14em; 
+	min-width: 14em; 
 	background-color: #fff;
 	height:1em;
 }
@@ -224,7 +224,7 @@ body {
 	width: 60%;
 	min-width: 18em;
 	height: 60%;
-	min-hieght: 18em;
+	min-height: 18em;
 	margin: auto;
 	border: 1px solid black;
 	border-radius: 10px;
