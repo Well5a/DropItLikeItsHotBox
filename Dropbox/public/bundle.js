@@ -89,7 +89,12 @@
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //Login Form
+	//Filebrowser
+	//Registration-Form
+	
+	// web-client used in this application
+	
 	
 	/**
 	 * Main class for Dropbox web application
@@ -118,6 +123,11 @@
 	        _this.checkAuthentication();
 	        return _this;
 	    }
+	
+	    /**
+	     * renders the component
+	     */
+	
 	
 	    _createClass(App, [{
 	        key: 'render',
@@ -156,6 +166,14 @@
 	                this.setState({ loggedin: true });
 	            } else this.setState({ loggedin: false });
 	        }
+	
+	        /**
+	         * callback-function for the Login React-Component,
+	         * defined in client/app/Login.jsx
+	         * 
+	         * @param {any} response
+	         */
+	
 	    }, {
 	        key: 'loginCallback',
 	        value: function loginCallback(response) {
@@ -186,6 +204,12 @@
 	                return this.renderBrowser();
 	            }
 	        }
+	
+	        /**
+	         * renders bar containing the name of the active
+	         * user and a link for loggin the user out.
+	         */
+	
 	    }, {
 	        key: 'renderLoggedInBar',
 	        value: function renderLoggedInBar() {
@@ -236,7 +260,8 @@
 	        }
 	
 	        /**
-	         * render Login form
+	         * renders div containing the Login React-Component,
+	         * defined in client/app/Login.jsx
 	         */
 	
 	    }, {
@@ -260,6 +285,12 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * renders div containing the Registration React-Component,
+	         * defined in client/app/Registration.jsx
+	         */
+	
 	    }, {
 	        key: 'renderRegistration',
 	        value: function renderRegistration() {
@@ -271,11 +302,23 @@
 	                })
 	            );
 	        }
+	
+	        /**
+	         * handler for the "register here" button
+	         */
+	
 	    }, {
 	        key: 'registerButtonHandler',
 	        value: function registerButtonHandler() {
 	            this.setState({ registering: true });
 	        }
+	
+	        /**
+	         * Callback for the Registration React-Component, 
+	         * defined in client/app/Registration.jsx
+	         * @param {any} username
+	         */
+	
 	    }, {
 	        key: 'registerCallback',
 	        value: function registerCallback(username) {
@@ -5071,6 +5114,11 @@
 	        return _this;
 	    }
 	
+	    /**
+	     * renders the component
+	     */
+	
+	
 	    _createClass(Login, [{
 	        key: 'render',
 	        value: function render() {
@@ -8188,6 +8236,11 @@
 	        return _this;
 	    }
 	
+	    /**
+	     * renders the component
+	     */
+	
+	
 	    _createClass(Registration, [{
 	        key: 'render',
 	        value: function render() {
@@ -8277,6 +8330,11 @@
 	                )
 	            );
 	        }
+	
+	        /**
+	         * handles submit action
+	         */
+	
 	    }, {
 	        key: 'submitHandler',
 	        value: function submitHandler() {
@@ -8295,6 +8353,14 @@
 	                this.setState({ errorMessage: error.response.data.message });
 	            }.bind(this));
 	        }
+	
+	        /**
+	         * callback for post-request in submitHandler().
+	         * sets the error message and calls props.callback
+	         * 
+	         * @param {any} response response of request
+	         */
+	
 	    }, {
 	        key: 'registerHandler',
 	        value: function registerHandler(response) {

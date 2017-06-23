@@ -1,8 +1,9 @@
 import React from 'react';
-import Login from './login.jsx'
-import Browser from './browser.jsx'
-import Registration from './registration.jsx'
+import Login from './login.jsx'                 //Login Form
+import Browser from './browser.jsx'             //Filebrowser
+import Registration from './registration.jsx'   //Registration-Form
 
+// web-client used in this application
 import axios from 'axios'
 
 import {render} from 'react-dom';
@@ -32,6 +33,9 @@ class App extends React.Component
         this.checkAuthentication();
     }
     
+    /**
+     * renders the component
+     */
     render()
     {
         return (
@@ -72,6 +76,12 @@ class App extends React.Component
             this.setState({loggedin: false});
     }
     
+    /**
+     * callback-function for the Login React-Component,
+     * defined in client/app/Login.jsx
+     * 
+     * @param {any} response
+     */
     loginCallback(response)
     {
         //alert(response.data.username + " " + response.data.password);
@@ -108,6 +118,10 @@ class App extends React.Component
         }
     }
     
+    /**
+     * renders bar containing the name of the active
+     * user and a link for loggin the user out.
+     */
     renderLoggedInBar()
     {
         if (this.state.loggedin)
@@ -152,7 +166,8 @@ class App extends React.Component
     }
     
     /**
-     * render Login form
+     * renders div containing the Login React-Component,
+     * defined in client/app/Login.jsx
      */
     renderLogIn()
     {
@@ -166,6 +181,10 @@ class App extends React.Component
         );
     }
     
+    /**
+     * renders div containing the Registration React-Component,
+     * defined in client/app/Registration.jsx
+     */
     renderRegistration()
     {
         return (
@@ -177,11 +196,19 @@ class App extends React.Component
         );
     }
     
+    /**
+     * handler for the "register here" button
+     */
     registerButtonHandler()
     {
         this.setState({registering: true});
     }
     
+    /**
+     * Callback for the Registration React-Component, 
+     * defined in client/app/Registration.jsx
+     * @param {any} username
+     */
     registerCallback(username)
     {
         //login abgebrochen, der nutzer will zurück zum login

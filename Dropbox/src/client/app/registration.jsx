@@ -15,6 +15,9 @@ class Registration extends React.Component
         this.submitHandler = this.submitHandler.bind(this);
     }
     
+    /**
+     * renders the component
+     */
     render()
     {
         return (
@@ -32,6 +35,9 @@ class Registration extends React.Component
         );
     }
     
+    /**
+     * handles submit action
+     */
     submitHandler()
     {    
         var payload = {
@@ -49,6 +55,12 @@ class Registration extends React.Component
             .catch( function(error){ this.setState({errorMessage: error.response.data.message})}.bind(this) );
     }
     
+    /**
+     * callback for post-request in submitHandler().
+     * sets the error message and calls props.callback
+     * 
+     * @param {any} response response of request
+     */
     registerHandler(response)
     {
         if (response.status < 300)
