@@ -185,7 +185,8 @@ class Browser extends React.Component
      */
     renderListElement(subdirectory)
     {
-        var datestr = new Date(subdirectory.lastChanged).toTimeString();
+        var date = new Date(subdirectory.lastChanged);
+        var datestr = this.toDateString(date);
         return(
                 <tr onClick={ function(e) { e.preventDefault(); this.getDirectory(subdirectory.path); }.bind(this) } >
                     <td>{this.getImage(subdirectory.type)}</td>
@@ -205,6 +206,20 @@ class Browser extends React.Component
     getImage(type)
     {
         return <img alt={type + "-icon"} src={"public/icon/" + type + ".png"}/>
+    }
+    
+    toDateString(date)
+    {
+        return this.zeroPadding(date.getDate(), 2) + '.' + this.zeroPadding(date.getMonth(), 2) + '.' 
+        + date.getFullYear() + ' ' + this.zeroPadding(date.getHours(), 2) + ':' + this.zeroPadding(date.getMinutes(), 2);
+    }
+    
+    zeroPadding(value, length)
+    {
+        var valLen = value.toString().length;
+        var ret = "";
+        var padLength = (length+1) - valLen;
+        return padLength > 0 ? new Array(padLength).join('0') + value : value.toString();
     }
     
     /**

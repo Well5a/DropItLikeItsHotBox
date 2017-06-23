@@ -6990,7 +6990,8 @@
 	    }, {
 	        key: 'renderListElement',
 	        value: function renderListElement(subdirectory) {
-	            var datestr = new Date(subdirectory.lastChanged).toTimeString();
+	            var date = new Date(subdirectory.lastChanged);
+	            var datestr = this.toDateString(date);
 	            return _react2.default.createElement(
 	                'tr',
 	                { onClick: function (e) {
@@ -7032,6 +7033,19 @@
 	        key: 'getImage',
 	        value: function getImage(type) {
 	            return _react2.default.createElement('img', { alt: type + "-icon", src: "public/icon/" + type + ".png" });
+	        }
+	    }, {
+	        key: 'toDateString',
+	        value: function toDateString(date) {
+	            return this.zeroPadding(date.getDate(), 2) + '.' + this.zeroPadding(date.getMonth(), 2) + '.' + date.getFullYear() + ' ' + this.zeroPadding(date.getHours(), 2) + ':' + this.zeroPadding(date.getMinutes(), 2);
+	        }
+	    }, {
+	        key: 'zeroPadding',
+	        value: function zeroPadding(value, length) {
+	            var valLen = value.toString().length;
+	            var ret = "";
+	            var padLength = length + 1 - valLen;
+	            return padLength > 0 ? new Array(padLength).join('0') + value : value.toString();
 	        }
 	
 	        /**
