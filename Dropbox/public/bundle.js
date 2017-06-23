@@ -7170,10 +7170,10 @@
 	
 	    }, {
 	        key: 'getDeleteHandler',
-	        value: function getDeleteHandler(path) {
+	        value: function getDeleteHandler(subdirectory) {
 	            return function (e) {
 	                e.stopPropagation();
-	                _axios2.default.delete("/DropBox/rest/box/remove/" + path).then(function (response) {
+	                _axios2.default.delete("/DropBox/rest/box/remove/" + subdirectory.path).then(function (response) {
 	                    this.getDirectory(this.state.currentDirectory.self.path);
 	                }.bind(this));
 	            }.bind(this);

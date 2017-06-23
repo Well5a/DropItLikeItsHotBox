@@ -281,12 +281,12 @@ class Browser extends React.Component
      * 
      * @return eventhandler for the delte action
      */
-    getDeleteHandler(path)
+    getDeleteHandler(subdirectory)
     {
         return function(e)
         {
             e.stopPropagation();
-            axios.delete("/DropBox/rest/box/remove/" + path)
+            axios.delete("/DropBox/rest/box/remove/" + subdirectory.path)
             .then(
                     function(response)
                     {
