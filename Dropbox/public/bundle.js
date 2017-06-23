@@ -120,6 +120,8 @@
 	        _this.authenticationCallback = _this.authenticationCallback.bind(_this);
 	        _this.registerCallback = _this.registerCallback.bind(_this);
 	        _this.registerButtonHandler = _this.registerButtonHandler.bind(_this);
+	        // first function called when loading the script, checks if user is already
+	        // logged in and sets the state accordingly
 	        _this.checkAuthentication();
 	        return _this;
 	    }

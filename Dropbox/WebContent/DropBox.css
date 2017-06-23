@@ -1,4 +1,4 @@
-00/* File Dropbox.css: stylesheet for the DropBox web-application*/
+/* File Dropbox.css: stylesheet for the DropBox web-application*/
 
 body {
  	font-family: helvetica;
@@ -7,6 +7,7 @@ body {
   	/*background-image: url("public/dank.jpg");*/
 }
 
+/* -------------------- Header -------------------- */
 #header{
 	position: fixed;
 	float: left;
@@ -23,20 +24,6 @@ body {
 	font-size: 40px;
 }
 
-#login{
-	display:block;
-	background-color: #fff;
-	margin-top: 25%;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 14em;
-	position: relative;
-	float: center;
-    padding: 1em;
-	border: 2px solid #555;
-	border-radius: 25px;
-}
-
 #app_main{
 	float: left;
 	position: relative;
@@ -50,6 +37,22 @@ body {
 	margin-left: 10%;
 	margin-right: 10%;
 	border: 1px solid #555;
+}
+
+/* -------------------- Login -------------------- */
+
+#login{
+	display:block;
+	background-color: #fff;
+	margin-top: 25%;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 14em;
+	position: relative;
+	float: center;
+    padding: 1em;
+	border: 2px solid #555;
+	border-radius: 25px;
 }
 
 #login button{
@@ -70,6 +73,23 @@ body {
 	margin: 0.2em;
 	width: 8em;
 }
+
+/* -------------------- loggedInBar ------------------- */
+#loggedInBar {
+	display: block;
+	height: 3em;
+	width: 100%;
+}
+
+#loggedInBar a {
+	float:right;
+}
+
+#loggedInBar p {
+	float:left;
+}
+
+/* -------------------- Filebrowser -------------------- */
 
 #filebrowser {
 	padding: 1em;
@@ -135,7 +155,7 @@ body {
   width: 100%;
 }
 
-
+/* -------------- Tabellenspalten ---------------  */
 /* Erste Tabellenspalte */
 #filebrowser table > tr > td:nth-child(1)
 {
@@ -146,31 +166,19 @@ body {
 {
 	min-width: 14em;
 }
-
+/* Dritte Tabellenspalte */
 #filebrowser table > tr > td:nth-child(3)
 {
 	min-width: 9em;
 }
-
+/* Vierte Tabellenspalte */
 #filebrowser table > tr > td:nth-child(4)
 {
 	min-width: 3.4em;
 }
 
-#loggedInBar {
-	display: block;
-	height: 3em;
-	width: 100%;
-}
 
-#loggedInBar a {
-	float:right;
-}
-
-#loggedInBar p {
-	float:left;
-}
-
+/* ---------- addFileMenu(lower Secion of Filebrowser) ---------- */
 #addFileMenu p {
 	display: block;
 	width: 8em;
@@ -206,6 +214,8 @@ body {
 	top: -1.3em;
 	margin-left: 0.2em;
 }
+
+/* ----------------- Registration ---------------- */
 
 #registration {
 	background-color: lightgrey;

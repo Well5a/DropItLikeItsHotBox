@@ -30,6 +30,8 @@ class App extends React.Component
         this.authenticationCallback = this.authenticationCallback.bind(this);
         this.registerCallback = this.registerCallback.bind(this);
         this.registerButtonHandler = this.registerButtonHandler.bind(this);
+        // first function called when loading the script, checks if user is already
+        // logged in and sets the state accordingly
         this.checkAuthentication();
     }
     
