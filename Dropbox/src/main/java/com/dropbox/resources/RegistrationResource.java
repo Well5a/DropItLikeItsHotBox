@@ -50,6 +50,7 @@ public class RegistrationResource
 		clientMessage.addProperty("username", username);
 		//Erstellt user neu, da oid gesetzt und password gehasht werden muss
 		User u = new User();
+		//u.setOId(dao.getMaxId());
 		u.setEmail(email);
 		u.setUsername(username);
 		u.setAndHashPasswd(password);

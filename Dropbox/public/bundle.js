@@ -7031,7 +7031,7 @@
 	    }, {
 	        key: 'getImage',
 	        value: function getImage(type) {
-	            return _react2.default.createElement('img', { alt: type + "-icon", src: "public/icon/" + type + ".svg" });
+	            return _react2.default.createElement('img', { alt: type + "-icon", src: "public/icon/" + type + ".png" });
 	        }
 	
 	        /**

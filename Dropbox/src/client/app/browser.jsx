@@ -204,7 +204,7 @@ class Browser extends React.Component
      */
     getImage(type)
     {
-        return <img alt={type + "-icon"} src={"public/icon/" + type + ".svg"}/>
+        return <img alt={type + "-icon"} src={"public/icon/" + type + ".png"}/>
     }
     
     /**
