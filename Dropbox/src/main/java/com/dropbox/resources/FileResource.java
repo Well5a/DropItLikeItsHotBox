@@ -197,7 +197,8 @@ public class FileResource
 	 */
 	private String getParentsPath(java.io.File child)
 	{
-		File parentFileDescriptor = FileDao.getInstance().getFileByPath(toResourcePath(child.getParent()));
+		File parentFileDescriptor = FileDao.getInstance()
+											.getFileByPath(toResourcePath(child.getParent()).replace("\\", "/"));
 		if (parentFileDescriptor != null 
 				&& parentFileDescriptor
 				.getUser()
