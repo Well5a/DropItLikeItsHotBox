@@ -7,6 +7,10 @@ body {
   	/*background-image: url("public/dank.jpg");*/
 }
 
+/*#dropzone:hover {
+	background-image: url("public/snoop.gif");
+}*/
+
 /* -------------------- Header -------------------- */
 #header{
 	position: fixed;
@@ -14,6 +18,7 @@ body {
 	width: 100%;
 	margin-top: 0;
 	background-color: green;
+	z-index: 2;
 }
 
 #header h1 {
@@ -37,6 +42,7 @@ body {
 	margin-left: 10%;
 	margin-right: 10%;
 	border: 1px solid #555;
+	z-index: 1;
 }
 
 /* -------------------- Login -------------------- */
@@ -65,8 +71,9 @@ body {
 #login input {
 	position: relative;
 	float: left;
-	margin-left: 6em;
+	margin-left: 7em;
 	top: -1.2em;
+	width: 50%;
 }
 
 #login p > button {
@@ -83,6 +90,7 @@ body {
 
 #loggedInBar a {
 	float:right;
+	/*line-height: auto;*/
 }
 
 #loggedInBar p {
@@ -112,7 +120,7 @@ body {
 	background-color: #FFF;
 	width: 100%;
 	margin:0em;
-	height: 5em;
+	height: 8em;
 	border: 2px dashed black;
 	border-radius: 10px;
 	text-align: center;
@@ -143,16 +151,16 @@ body {
 }
 
 #filebrowser table td > button {
-	position: relative;
-	float:right;
+	/*position: relative;*/
+	/*float:right;*/
 	width:100%;
-	height:100%;
+	height:auto;
 }
 
 
 #filebrowser td > img {
-	height: 100%;
-  width: 100%;
+	height: auto;
+	width: 100%;
 }
 
 /* -------------- Tabellenspalten ---------------  */
