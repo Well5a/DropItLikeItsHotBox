@@ -7,12 +7,18 @@ body {
   	/*background-image: url("public/dank.jpg");*/
 }
 
+/*#dropzone:hover {
+	background-image: url("public/snoop.gif");
+}*/
+
+/* -------------------- Header -------------------- */
 #header{
 	position: fixed;
 	float: left;
 	width: 100%;
 	margin-top: 0;
 	background-color: green;
+	z-index: 2;
 }
 
 #header h1 {
@@ -21,20 +27,6 @@ body {
   
 	font-family: helvetica;
 	font-size: 40px;
-}
-
-#login{
-	display:block;
-	background-color: #fff;
-	margin-top: 25%;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: 14em;
-	position: relative;
-	float: center;
-    padding: 1em;
-	border: 2px solid #555;
-	border-radius: 25px;
 }
 
 #app_main{
@@ -50,6 +42,23 @@ body {
 	margin-left: 10%;
 	margin-right: 10%;
 	border: 1px solid #555;
+	z-index: 1;
+}
+
+/* -------------------- Login -------------------- */
+
+#login{
+	display:block;
+	background-color: #fff;
+	margin-top: 25%;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 14em;
+	position: relative;
+	margin: 0 auto;
+    padding: 1em;
+	border: 2px solid #555;
+	border-radius: 25px;
 }
 
 #login button{
@@ -60,8 +69,35 @@ body {
 }
 
 #login input {
-	margin: 0.2em;
+	position: relative;
+	float: left;
+	margin-left: 7em;
+	top: -1.2em;
+	width: 50%;
 }
+
+#login p > button {
+	margin: 0.2em;
+	width: 8em;
+}
+
+/* -------------------- loggedInBar ------------------- */
+#loggedInBar {
+	display: block;
+	height: 3em;
+	width: 100%;
+}
+
+#loggedInBar a {
+	float:right;
+	/*line-height: auto;*/
+}
+
+#loggedInBar p {
+	float:left;
+}
+
+/* -------------------- Filebrowser -------------------- */
 
 #filebrowser {
 	padding: 1em;
@@ -74,11 +110,6 @@ body {
 	border-radius: 25px;
 }
 
-#filebrowser li {
-	display:block;
-	background-color: #fff;
-}
-
 #filebrowser h2 {
 	font-family: helvetica;
 	font-size: 18px;
@@ -88,35 +119,166 @@ body {
 	display: block;
 	background-color: #FFF;
 	width: 100%;
-	height: 5em;
+	margin:0em;
+	height: 8em;
+	border: 2px dashed black;
+	border-radius: 10px;
+	text-align: center;
+	font-family: sans-serif;
+	font-style: italic;
+	color: #CCC;
 }
 
-#filebrowser ul {
+#filebrowser table {
+	font-size: 16px;
 	display:block;
 	padding: 0em;
-	list-style: none;
-	list-style-position: none;
+	margin: 0em;
 }
 
-#filebrowser ul li:nth-child(even){
+#filebrowser table, th, td {
+    border: 1px solid black;
+}
+
+#filebrowser tr {
+	min-width: 14em; 
+	background-color: #fff;
+	height:1em;
+}
+
+#filebrowser table tr:nth-child(even){
 	background-color: lightblue;
 }
 
-#addFileSection {
-	/* not yet implemented */
-	display: none;
+#filebrowser table td > button {
+	/*position: relative;*/
+	/*float:right;*/
+	width:100%;
+	height:auto;
 }
 
-#loggedInBar {
-	display: block;
-	height: 3em;
+
+#filebrowser td > img {
+	height: auto;
 	width: 100%;
 }
 
-#loggedInBar a {
-	float:right;
+/* -------------- Tabellenspalten ---------------  */
+/* Erste Tabellenspalte */
+#filebrowser table > tr > td:nth-child(1)
+{
+	min-width: 2em;
+}
+/* Zweite Tabellenspalte */
+#filebrowser table > tr > td:nth-child(2)
+{
+	min-width: 14em;
+}
+/* Dritte Tabellenspalte */
+#filebrowser table > tr > td:nth-child(3)
+{
+	min-width: 9em;
+}
+/* Vierte Tabellenspalte */
+#filebrowser table > tr > td:nth-child(4)
+{
+	min-width: 3.4em;
 }
 
-#loggedInBar p {
-	float:left;
+
+/* ---------- addFileMenu(lower Secion of Filebrowser) ---------- */
+#addFileMenu p {
+	display: block;
+	width: 8em;
+	margin: 0px;
+	padding: 0px;
+	font-size: 15px;
 }
+
+#addDirectoryDiv {
+	display: block;
+	font-family: helvetica;
+	width: 100%;
+	height: 2em;
+	margin: 0px;
+	margin-top: 0.2em;
+	padding: 0px;
+	font-size: 15px;
+}
+
+#addDirectoryDiv input {
+  width: calc(100% - 11em);
+	position: relative;
+	float: left;
+	margin:0em;
+	top: -1.3em;
+	margin-left: 8em;
+}
+
+#addDirectoryDiv button {
+  position: relative;
+	float: left;
+	margin:0em;
+	top: -1.3em;
+	margin-left: 0.2em;
+}
+
+/* ----------------- Registration ---------------- */
+
+#registration {
+	background-color: lightgrey;
+	padding:1em;
+	display:block;
+	width: 60%;
+	min-width: 18em;
+	height: 60%;
+	min-height: 18em;
+	margin: auto;
+	border: 1px solid black;
+	border-radius: 10px;
+}
+
+#registration > div{
+	padding: 0em;
+}
+
+#registration div > div {
+	 text-align: center;
+	 height: 2em;
+	 width:100%;
+	 margin-top: 0em;
+	 margin-bottom: 0em;
+}
+#registration div > div > p{
+	float: left;
+	position: absolute;
+	width: 8em;
+	height: 2em;
+}
+
+#registration div > div > input {
+  position: relative;
+	margin-left: 12em;
+	top: 1em;
+	float: left;
+}
+
+#registration div > div > button {
+  position: relative;
+	margin-left: 12em;
+	top: 1em;
+	float: left;
+}
+
+#registration #regStatus {
+	color: red;
+	display: block;
+	width: 20em;
+  text-align: center;
+}
+
+#registration > div > p {
+	position: relative;
+	float: right;
+}
+

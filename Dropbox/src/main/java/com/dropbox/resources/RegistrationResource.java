@@ -50,9 +50,9 @@ public class RegistrationResource
 		clientMessage.addProperty("username", username);
 		//Erstellt user neu, da oid gesetzt und password gehasht werden muss
 		User u = new User();
+		//u.setOId(dao.getMaxId());
 		u.setEmail(email);
 		u.setUsername(username);
-		u.setOId(dao.getMaxId() + 1);
 		u.setAndHashPasswd(password);
 		dao.insertUser(u);
 		FileDao.getInstance().createDirectory(username, u);

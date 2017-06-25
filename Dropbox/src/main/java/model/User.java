@@ -20,6 +20,10 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@TableGenerator( name = "userSeq", table = "SEQUENCE", 
+    pkColumnName = "SEQ_NAME", pkColumnValue = "TUSER", 
+    valueColumnName = "SEQ_COUNT", initialValue = 1, allocationSize = 1 )
+	@GeneratedValue( strategy = GenerationType.TABLE, generator = "userSeq" )
 	private int oId;
 
 	private String email;

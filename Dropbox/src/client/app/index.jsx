@@ -1,8 +1,9 @@
 import React from 'react';
-import Login from './login.jsx'
-import Browser from './browser.jsx'
-import Registration from './registration.jsx'
+import Login from './login.jsx'                 //Login Form
+import Browser from './browser.jsx'             //Filebrowser
+import Registration from './registration.jsx'   //Registration-Form
 
+// web-client used in this application
 import axios from 'axios'
 
 import {render} from 'react-dom';
@@ -29,9 +30,14 @@ class App extends React.Component
         this.authenticationCallback = this.authenticationCallback.bind(this);
         this.registerCallback = this.registerCallback.bind(this);
         this.registerButtonHandler = this.registerButtonHandler.bind(this);
+        // first function called when loading the script, checks if user is already
+        // logged in and sets the state accordingly
         this.checkAuthentication();
     }
     
+    /**
+     * renders the component
+     */
     render()
     {
         return (
@@ -72,12 +78,17 @@ class App extends React.Component
             this.setState({loggedin: false});
     }
     
+    /**
+     * callback-function for the Login React-Component,
+     * defined in client/app/Login.jsx
+     * 
+     * @param {any} response
+     */
     loginCallback(response)
     {
         //alert(response.data.username + " " + response.data.password);
         if (response.status > 199 && response.status < 300)
         {
-            console.log("setting current dir...");
             this.setState({username: response.data.username});
             this.setState({browsing: true});
             this.setState({loggedin: true});
@@ -109,6 +120,10 @@ class App extends React.Component
         }
     }
     
+    /**
+     * renders bar containing the name of the active
+     * user and a link for loggin the user out.
+     */
     renderLoggedInBar()
     {
         if (this.state.loggedin)
@@ -153,7 +168,8 @@ class App extends React.Component
     }
     
     /**
-     * render Login form
+     * renders div containing the Login React-Component,
+     * defined in client/app/Login.jsx
      */
     renderLogIn()
     {
@@ -167,6 +183,10 @@ class App extends React.Component
         );
     }
     
+    /**
+     * renders div containing the Registration React-Component,
+     * defined in client/app/Registration.jsx
+     */
     renderRegistration()
     {
         return (
@@ -178,16 +198,32 @@ class App extends React.Component
         );
     }
     
+    /**
+     * handler for the "register here" button
+     */
     registerButtonHandler()
     {
         this.setState({registering: true});
     }
     
+    /**
+     * Callback for the Registration React-Component, 
+     * defined in client/app/Registration.jsx
+     * @param {any} username
+     */
     registerCallback(username)
     {
-        this.setState({username: username});
-        this.setState({registering: false});
-        this.setState({browsing: true});
+        //login abgebrochen, der nutzer will zurück zum login
+        if (username === "")
+        {
+            this.setState({registering: false});
+        }
+        else
+        {
+            this.setState({username: username});
+            this.setState({registering: false});
+            this.setState({browsing: true});
+        }
     }
 };
 

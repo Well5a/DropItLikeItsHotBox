@@ -25,6 +25,8 @@ public class UserDaoTest {
 	public void authenticateTest()
 	{
 		assertTrue(UserDao.getInstance().authenticate("RandyRanderson", "guest"));
+		java.io.File file = new java.io.File(".\\");
+		System.out.println(file.getAbsolutePath());
 	}
 /*
 	@AfterClass

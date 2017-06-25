@@ -18,6 +18,9 @@ class Login extends React.Component
         this.handleLogin = this.handleLogin.bind(this);
     }
     
+    /**
+     * renders the component
+     */
     render()
     {
         return(

@@ -21,10 +21,11 @@ import model.User;
 @Path("user/{username}")
 public class UserResource 
 {
+	/*
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
 	public User userExists(@PathParam("username") String username)
 	{
 		return UserDao.getInstance().getUserByUsername(username);	
-	}
+	}*/
 }
