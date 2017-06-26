@@ -40,7 +40,7 @@ public class AuthenticationResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response loginUser(String data)
 	{
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession();
 		if (session.getAttribute("user") != null)
 			return Response.noContent().build();
 		LoginData login = new Gson().fromJson(data, LoginData.class);
