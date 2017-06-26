@@ -32,6 +32,8 @@ public class UserDao {
 	
 	public User getUserByUsername(String username)
 	{
+		if (username == null)
+			return null;
 		Query q = em.createQuery("SELECT u FROM User u WHERE u.username LIKE :username");
 		q.setParameter("username", username);
 		return q.getResultList().isEmpty() ? 

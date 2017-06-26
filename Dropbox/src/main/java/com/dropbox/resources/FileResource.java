@@ -175,7 +175,13 @@ public class FileResource
 		return result.toString();
 	}
 	
-	
+	/**
+	 * Converts the designated File to a JSON representation for display
+	 * in the clients filebrowser.
+	 * 
+	 * @param f File to be converted
+	 * @return JSON representation of the File
+	 */
 	private JsonObject toJsonFileEntry(java.io.File f)
 	{
 		if (!f.exists()) 
