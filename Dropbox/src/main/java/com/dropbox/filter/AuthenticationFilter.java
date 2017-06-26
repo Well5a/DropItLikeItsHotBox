@@ -10,17 +10,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.*;
 
+import com.dropbox.util.ResourceRules;
+
 public class AuthenticationFilter implements Filter
 {
 	//Defines, which resources can be accessed without authentication
-	public final String [] whitelist = {
-			"/DropBox/login.html",
-			"/DropBox/rest/authenticate/login",
-			"/DropBox/rest/authenticate/logout",
-			"/DropBox/rest/authenticate",
-			"/DropBox/rest/register"
-	};
-	
 	private FilterConfig filterConfig;
 	
 	@Override
@@ -35,26 +29,16 @@ public class AuthenticationFilter implements Filter
 		// TODO Auto-generated method stub
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
 		
 		boolean loggedIn = session != null && session.getAttribute("user") != null;
-        boolean loginRequest = checkWhitelisted(request.getRequestURI());
+        boolean loginRequest = ResourceRules.checkWhitelisted(request.getPathInfo());
 
         if (loggedIn || loginRequest) {
             chain.doFilter(request, response);
         } else {
-            response.setStatus(401);
+            response.sendRedirect("/DropBox/index.html");
         }
-	}
-
-	private boolean checkWhitelisted(String requestUri)
-	{
-		for (String uri : whitelist)
-		{
-			if (uri.equals(requestUri))
-				return true;
-		}
-		return false;
 	}
 	
 	@Override
